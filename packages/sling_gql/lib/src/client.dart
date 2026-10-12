@@ -2936,7 +2936,9 @@ class SlingClient<Q extends Accessor> {
   bool _enqueueLeaf(Selection leaf, QueryScope<Q> scope) {
     final single = _singleton(leaf);
     for (final batch in _inflight) {
-      if (!batch.tree.covers(single)) continue;
+      // An aborted batch brings nothing: joining it would only re-run the
+      // scope once it is dropped, and fetch then.
+      if (batch.cancel.isCancelled || !batch.tree.covers(single)) continue;
       batch.scopes.add(scope);
       return false;
     }

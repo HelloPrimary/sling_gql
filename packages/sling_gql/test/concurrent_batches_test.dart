@@ -126,4 +126,31 @@ void main() {
     await second.whenSettled;
     expect(client.isIdle, isTrue);
   });
+
+  test('a read does not join a request aborted because its scopes are '
+      'gone', () async {
+    final transport = _Manual();
+    final client = transport.client();
+    final sent = <int>{};
+    client.requests.listen((r) => sent.add(r.id));
+
+    final gone = client.createScope(onChanged: () {});
+    gone.run((q) => q.user(id: 'u')?.name);
+    await _ticks();
+    expect(sent, hasLength(1));
+
+    gone.dispose(); // aborts its request
+    var rebuilds = 0;
+    final next = client.createScope(onChanged: () => rebuilds++);
+    next.run((q) => q.user(id: 'u')?.name); // before the abort has landed
+    await _ticks();
+    expect(sent, hasLength(2), reason: 'sent at once, not after the abort');
+    expect(rebuilds, 0);
+
+    transport.pending.removeAt(0); // the aborted one, never answered
+    transport.answer(user: true);
+    await next.whenSettled;
+    expect(next.run((q) => q.user(id: 'u')?.name), 'Bob');
+    expect(client.isIdle, isTrue);
+  });
 }
