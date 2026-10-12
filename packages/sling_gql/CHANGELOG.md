@@ -1,3 +1,8 @@
+## 1.0.1
+
+ - **FIX**(sling_gql): a read never joins an aborted query batch. ([63613843](https://github.com/tpucci/sling_gql/commit/63613843306c74a38233b39c1172543e51b5a855))
+ - **FIX**(sling_gql): track every query batch in flight. ([c40addae](https://github.com/tpucci/sling_gql/commit/c40addaebeb375e43d99148afb3b74763ea1f21a))
+
 ## 1.0.0
 
 > Note: This release has breaking changes.
