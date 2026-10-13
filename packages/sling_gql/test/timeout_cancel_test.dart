@@ -177,6 +177,27 @@ void main() {
       expect(client.isIdle, isTrue);
     });
 
+    test('cancelQueries drops the response of every batch in flight and '
+        'notifies its scopes', () async {
+      final transport = _Hanging();
+      final client = transport.client();
+      var changes = 0;
+      final scope = client.createScope(onChanged: () => changes++);
+      scope.run((q) => q.me.name);
+      await _ticks();
+
+      client.cancelQueries();
+      client.cache.clear();
+      await _ticks();
+      expect(transport.aborted, 1);
+      expect(client.isIdle, isTrue);
+      expect(changes, 1, reason: 'the scope runs again');
+
+      transport.answer();
+      await _ticks();
+      expect(client.cache.read('query', ['me', 'name']), missing);
+    });
+
     test('client.dispose aborts the batch in flight', () async {
       final transport = _Hanging();
       final client = transport.client();

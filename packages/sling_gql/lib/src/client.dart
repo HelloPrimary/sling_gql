@@ -2070,6 +2070,19 @@ class SlingClient<Q extends Accessor> {
     return mutationQueue.clear();
   }
 
+  /// Aborts every query batch in flight: its response is dropped and the
+  /// scopes that waited for it are notified, to run again (and fetch with
+  /// the headers of that moment).
+  ///
+  /// On sign-out, once the credentials are gone and before clearing the
+  /// cache: a response requested with the previous user's headers would
+  /// otherwise land in the cleared cache (and in its store).
+  void cancelQueries() {
+    for (final batch in _inflight) {
+      batch.cancel.cancel();
+    }
+  }
+
   /// Queues an offline call (see [mutateWith]) and sends it when its turn
   /// comes; completes with its outcome.
   Future<T> _mutateOffline<M extends Accessor, T>(

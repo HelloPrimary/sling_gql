@@ -225,9 +225,15 @@ one signed in would run as the new user. Sign-out must clear the queue:
 ```dart
 Future<void> signOut() async {
   await client.clearMutationQueue(); // rolls back, fails the futures, empties the store
+  client.cancelQueries();            // drops the responses still in flight
   await persistence.clear();         // with sling_gql_sqflite: cache + stored queue
 }
 ```
+
+`cancelQueries()` aborts the query batches in flight: a response requested with the
+previous user's headers would otherwise land in the cleared cache. Call it once the
+credentials are gone: the scopes that waited run again and fetch with the headers of that
+moment.
 
 `clearMutationQueue()` rolls back every queued call's optimistic writes (newest first, from
 the stored undo log for calls restored from an earlier run), fails their futures with a

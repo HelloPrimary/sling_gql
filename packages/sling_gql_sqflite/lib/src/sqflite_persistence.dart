@@ -681,7 +681,8 @@ final class SqflitePersistence {
   /// [mutationQueue] and the database. Call the client's
   /// `clearMutationQueue()` first: it also rolls back the queued calls'
   /// optimistic writes, fails their futures and stops replaying them (this
-  /// only empties the table the next run would replay).
+  /// only empties the table the next run would replay), and its
+  /// `cancelQueries()`: a response in flight would land after the clear.
   Future<void> clear() {
     cache.clear();
     unawaited(mutationQueue.clear());

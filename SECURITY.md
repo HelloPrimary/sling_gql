@@ -36,7 +36,8 @@ In scope — sling_gql's own code in this repository, in particular:
   carry.
 - **Sign-out clearing**: offline mutations surviving
   `SlingClient.clearMutationQueue()` / `SqflitePersistence.clear()`, or
-  replayed under the next user's credentials after both were called.
+  replayed under the next user's credentials after both were called; a query
+  response in flight landing in the cache after `SlingClient.cancelQueries()`.
 - Response handling: a server response that makes the client write data under
   another entity's key or another query's cache entry.
 
