@@ -1,3 +1,11 @@
+## 1.1.0
+
+ - **PERF**(sling_gql): a miss builds its singleton tree only when a batch is in flight. ([91a26d1c](https://github.com/tpucci/sling_gql/commit/91a26d1c95ddbf2566b6467353d688a5a806b496))
+ - **PERF**(sling_gql): TypePolicy.keyFields are looked up once per selection node. ([9787e674](https://github.com/tpucci/sling_gql/commit/9787e6744a332461913fe4af726536318fad9332))
+ - **FEAT**(sling_gql): TypePolicy.keyFields, the fields a custom identify reads. ([6aed5de7](https://github.com/tpucci/sling_gql/commit/6aed5de720e4aeed4543fabf0df462c95e69b9bf))
+ - **FEAT**(sling_gql): cancelQueries drops the responses in flight on sign-out. ([49b6e9b0](https://github.com/tpucci/sling_gql/commit/49b6e9b05fd88fbc8a92eca45d6b736bc4d1e81b))
+ - **DOCS**(sling_gql): keyFields example without app vocabulary. ([3e925fc9](https://github.com/tpucci/sling_gql/commit/3e925fc9334d31862a5ffe95df43964a3aaae2f8))
+
 ## 1.0.1
 
  - **FIX**(sling_gql): a read never joins an aborted query batch. ([63613843](https://github.com/tpucci/sling_gql/commit/63613843306c74a38233b39c1172543e51b5a855))

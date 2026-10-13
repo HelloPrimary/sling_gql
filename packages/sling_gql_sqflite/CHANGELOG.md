@@ -1,3 +1,7 @@
+## 1.2.0
+
+ - **FEAT**(sling_gql): cancelQueries drops the responses in flight on sign-out. ([49b6e9b0](https://github.com/tpucci/sling_gql/commit/49b6e9b05fd88fbc8a92eca45d6b736bc4d1e81b))
+
 ## 1.1.0
 
  - **FIX**(sling_gql_sqflite): migration types an entity by its __typename. ([793e114f](https://github.com/tpucci/sling_gql/commit/793e114fbc190ff10d4cf3e5c58292ccfe8d49cb))
