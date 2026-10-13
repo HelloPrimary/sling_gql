@@ -65,6 +65,7 @@ final class LoadOptions {
     required this.maxAgeMs,
     required this.maxEntities,
     this.codec,
+    this.normalization,
     this.migrateFrom,
     this.migrateTo,
   }) : assert((migrateFrom == null) == (migrateTo == null));
@@ -74,6 +75,9 @@ final class LoadOptions {
   final int? maxAgeMs;
   final int? maxEntities;
   final SqfliteCodec? codec;
+
+  /// The cache's normalization; the default for [keyField] when `null`.
+  final Normalization? normalization;
 
   /// The fields the rows were written under and the current ones, when the
   /// schema hash changed: the rows are migrated (see [loadCache]).
@@ -211,10 +215,11 @@ LoadedCache loadCache((StoredRows, LoadOptions) input) {
   // The decoded maps are ours: the cache takes them over instead of copying
   // them a second time (#68).
   return LoadedCache(
-    cache: NormalizedCache.adopt({
-      if (root.isNotEmpty) queryRoot: root,
-      ...reach.kept,
-    }, normalization: Normalization(keyField: options.keyField)),
+    cache: NormalizedCache.adopt(
+      {if (root.isNotEmpty) queryRoot: root, ...reach.kept},
+      normalization:
+          options.normalization ?? Normalization(keyField: options.keyField),
+    ),
     expiredRootFields: expired,
     cappedRootFields: capped,
     unreachableEntities: [

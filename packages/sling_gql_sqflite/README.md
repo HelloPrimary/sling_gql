@@ -139,6 +139,7 @@ background isolate. For whole-file encryption pass an SQLCipher
 | --- | --- | --- |
 | `databaseFactory` | sqflite's | `sqflite_common_ffi` for desktop/tests, `sqflite_common_ffi_web`, an SQLCipher factory for whole-file encryption |
 | `codec` | none | row-value transform (encryption), see above |
+| `normalization` | `schema.keyField`'s | the cache's identities when they are not the default (a custom `identify`) |
 | `maxAge` / `maxEntities` | 7 days / 10 000 | bounds applied at open |
 | `debounce` / `maxWait` | 1 s / 5 s | save timing |
 | `hydrateInIsolate` | `false` | decode and build the cache in a background isolate (`compute`) |

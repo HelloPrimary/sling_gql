@@ -59,6 +59,7 @@ void main() {
     bool compact = true,
     SlingSchema<Accessor, Accessor> schema = slingSchema,
     SqfliteCodec? codec,
+    Normalization? normalization,
     void Function(Object error, StackTrace stack)? onError,
     DateTime Function()? now,
   }) async {
@@ -73,6 +74,7 @@ void main() {
       flushOnLifecycle: flushOnLifecycle,
       compact: compact,
       codec: codec,
+      normalization: normalization,
       onError: onError,
       now: now,
     );
@@ -194,6 +196,31 @@ void main() {
         expect(changes, isNotEmpty);
         await again.flush();
         expect(await storedSnapshot(again), again.cache.snapshot);
+      },
+    );
+
+    test(
+      'a custom normalization keys the restored and the new entities',
+      () async {
+        const normalization = Normalization(identify: _membre);
+        final path = tempDatabasePath();
+        final first = await open(path, normalization: normalization);
+        await fetchAll(server.client(Query.root, cache: first.cache));
+        await first.flush();
+        await first.close();
+
+        final again = await open(path, normalization: normalization);
+        expect(again.cache.entity('Membre:1'), isNotNull);
+        expect(again.cache.entity('User:1'), isNull);
+
+        await server
+            .client(Query.root, cache: again.cache)
+            .mutateWith(
+              Mutation.root,
+              (m) => m.rename(id: '2', name: 'Grace')?.name,
+            );
+        expect(again.cache.entity('Membre:2')?['name'], 'Grace');
+        expect(again.cache.entity('User:2'), isNull);
       },
     );
 
@@ -1105,3 +1132,8 @@ class UserV2 extends Accessor {
   String? get name => scalar<String>('name');
   String? get age => scalar<String>('age');
 }
+
+String? _membre(Map<String, Object?> object) =>
+    object['__typename'] == 'User' && object['id'] != null
+    ? 'Membre:${object['id']}'
+    : null;

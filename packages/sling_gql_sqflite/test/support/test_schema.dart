@@ -171,6 +171,7 @@ Future<SqflitePersistence> openStore(
   bool flushOnLifecycle = false,
   bool compact = true,
   SqfliteCodec? codec,
+  Normalization? normalization,
   void Function(Object error, StackTrace stack)? onError,
   DateTime Function()? now,
 }) => SqflitePersistence.open(
@@ -185,6 +186,7 @@ Future<SqflitePersistence> openStore(
   flushOnLifecycle: flushOnLifecycle,
   compact: compact,
   codec: codec,
+  normalization: normalization,
   onError: onError,
   now: now ?? DateTime.now,
 );

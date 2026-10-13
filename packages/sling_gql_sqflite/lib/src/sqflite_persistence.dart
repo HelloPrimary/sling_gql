@@ -192,6 +192,13 @@ final class SqflitePersistence {
   ///
   /// [codec] transforms every row value (encryption, see [SqfliteCodec]).
   ///
+  /// [normalization] is the one the client's cache must use when it is not
+  /// the default for `schema.keyField` (a custom `identify`, e.g. an entity
+  /// whose id is only unique with another field). The stored keys are the
+  /// ones it produced: changing its identities needs a cold start (a new
+  /// [path] or [codec] id). With [hydrateInIsolate] its `identify` must be
+  /// sendable (a top-level or static function).
+  ///
   /// Bounds (`null` disables one): root fields last written more than
   /// [maxAge] ago are dropped; then, while the entities the remaining root
   /// fields reach exceed [maxEntities], the oldest root fields are dropped;
@@ -228,6 +235,7 @@ final class SqflitePersistence {
     bool flushOnLifecycle = true,
     bool compact = true,
     SqfliteCodec? codec,
+    Normalization? normalization,
     void Function(Object error, StackTrace stack)? onError,
     DateTime Function() now = DateTime.now,
   }) async {
@@ -280,6 +288,7 @@ final class SqflitePersistence {
           maxAgeMs: maxAge?.inMilliseconds,
           maxEntities: maxEntities,
           codec: codec,
+          normalization: normalization,
           migrateFrom: prepared.migrateFrom,
           migrateTo: prepared.migrateFrom == null ? null : schema.fields,
         );
