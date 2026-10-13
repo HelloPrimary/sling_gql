@@ -131,6 +131,10 @@ class Selection {
   @internal
   List<String> extraKeyFields = const [];
 
+  /// [extraKeyFields] were looked up for this node.
+  @internal
+  bool keyFieldsResolved = false;
+
   bool _isKeyField(Selection c) =>
       c.args.isEmpty &&
       (c.field == keyField || extraKeyFields.contains(c.field));
