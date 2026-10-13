@@ -155,7 +155,7 @@ class TypePolicy {
   final Map<String, FieldPolicy> fields;
 
   /// Fields a custom [Normalization.identify] reads besides the key field
-  /// (`patientId` when an id is only unique per patient). They are selected
+  /// (`ownerId` when an id is only unique per owner). They are selected
   /// with the key field on every keyed selection of the type, a request for
   /// the missing fields only included: without them, its response could not
   /// be keyed.
