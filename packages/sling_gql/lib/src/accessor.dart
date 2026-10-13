@@ -60,7 +60,13 @@ abstract interface class ListLocator {
 /// dispatch and everything is tree-shakeable — this is what replaces JS
 /// `Proxy` in GQty.
 abstract class Accessor {
-  Accessor(this.recorder, this.selection, this.path);
+  Accessor(this.recorder, this.selection, this.path) {
+    if (selection.keyField == null || recorder.typePolicies.isEmpty) return;
+    final keyFields = recorder.typePolicies[runtimeType]?.keyFields;
+    if (keyFields != null && keyFields.isNotEmpty) {
+      selection.extraKeyFields = keyFields;
+    }
+  }
 
   final Recorder recorder;
 

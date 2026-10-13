@@ -127,6 +127,14 @@ class Selection {
   @internal
   String? keyField;
 
+  /// The type's [TypePolicy.keyFields]: printed with [keyField].
+  @internal
+  List<String> extraKeyFields = const [];
+
+  bool _isKeyField(Selection c) =>
+      c.args.isEmpty &&
+      (c.field == keyField || extraKeyFields.contains(c.field));
+
   Iterable<Selection> get children => _children.values;
   bool get isLeaf => _children.isEmpty;
   bool get isRoot => parent == null;
@@ -339,6 +347,7 @@ class Selection {
   void _adopt(Selection other) {
     isObject |= other.isObject;
     keyField ??= other.keyField;
+    if (other.extraKeyFields.isNotEmpty) extraKeyFields = other.extraKeyFields;
     if (other._policyBound) bindPolicy(other._policy);
   }
 
@@ -566,7 +575,11 @@ class PrintedOperation {
   /// [object] or in another fragment. The key field a keyed fragment prints
   /// and `__typename` are never renamed (the cache needs them verbatim).
   static Map<Selection, String> _fragmentKeys(Selection object) {
-    final direct = <String>{'__typename', ?object.keyField};
+    final direct = <String>{
+      '__typename',
+      ?object.keyField,
+      ...object.extraKeyFields,
+    };
     final counts = <String, int>{};
     final fields = <(Selection, String)>[];
     var hasFragments = false;
@@ -580,8 +593,7 @@ class PrintedOperation {
           walk(c, c.typeCondition);
         } else if (typename == null) {
           direct.add(c.alias);
-        } else if (c.field != '__typename' &&
-            !(c.field == node.keyField && c.args.isEmpty)) {
+        } else if (c.field != '__typename' && !node._isKeyField(c)) {
           fields.add((c, typename));
           counts[c.alias] = (counts[c.alias] ?? 0) + 1;
         }
@@ -638,9 +650,12 @@ class PrintedOperation {
         }
         final keyField = node.keyField;
         if (keyField != null) out.writeln('$indent$keyField');
+        for (final f in node.extraKeyFields) {
+          out.writeln('$indent$f');
+        }
         for (final c in node.children) {
-          // The key field is already printed above; skip a plain duplicate.
-          if (c.field == keyField && c.args.isEmpty) continue;
+          // The key fields are already printed above; skip a plain duplicate.
+          if (node._isKeyField(c)) continue;
           if (c.isFragment) {
             out.writeln('$indent... on ${c.typeCondition} {');
             body(c, depth + 1);

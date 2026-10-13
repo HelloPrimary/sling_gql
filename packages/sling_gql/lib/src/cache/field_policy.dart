@@ -150,9 +150,16 @@ class FieldPolicy {
 
 /// The field policies of one type, by field name. See [FieldPolicy].
 class TypePolicy {
-  const TypePolicy({this.fields = const {}});
+  const TypePolicy({this.fields = const {}, this.keyFields = const []});
 
   final Map<String, FieldPolicy> fields;
+
+  /// Fields a custom [Normalization.identify] reads besides the key field
+  /// (`patientId` when an id is only unique per patient). They are selected
+  /// with the key field on every keyed selection of the type, a request for
+  /// the missing fields only included: without them, its response could not
+  /// be keyed.
+  final List<String> keyFields;
 }
 
 /// A cursor connection (`first`/`after`, `last`/`before`) cached as one

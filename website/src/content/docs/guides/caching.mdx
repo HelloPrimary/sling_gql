@@ -75,6 +75,18 @@ Passing your own `cache:` next to `schema:`? Build it with
  `Normalization(identify: (obj) => …)` replaces the whole rule;
 `Normalization.none` turns it off: every object is then stored where it appears, by path.
 
+An `identify` that reads more than the key field (an id only unique per patient, keyed
+`Screening:<id>:<patientId>`) declares those fields on the type, so that every request
+selects them, one fetching only the fields a screen lacks included:
+
+```dart
+SlingClient<Query>(
+  schema: slingSchema,
+  cache: Cache(normalization: normalization),
+  typePolicies: const {Screening: TypePolicy(keyFields: ['patientId'])},
+);
+```
+
 ## Lookups: `launch(id:)` is served from the entity
 
 A root field whose only argument is the key and which returns a keyed type
