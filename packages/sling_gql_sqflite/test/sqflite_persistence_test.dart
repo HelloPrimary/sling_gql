@@ -881,6 +881,25 @@ void main() {
       },
     );
 
+    test('types an entity by its __typename, not its key', () async {
+      const normalization = Normalization(identify: _membre);
+      final path = tempDatabasePath();
+      final first = await open(path, normalization: normalization);
+      await fetchAll(server.client(Query.root, cache: first.cache));
+      await first.close();
+      final again = await open(
+        path,
+        schema: v2Schema,
+        normalization: normalization,
+      );
+      expect(again.loaded.migrated, isTrue);
+      expect(again.cache.entity('Membre:1'), {
+        '__typename': 'User',
+        'id': '1',
+        'name': 'User 1',
+      });
+    });
+
     test('migrates in the background isolate too', () async {
       final path = tempDatabasePath();
       final first = await open(path);

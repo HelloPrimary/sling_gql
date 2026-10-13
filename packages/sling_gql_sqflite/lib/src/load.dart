@@ -290,9 +290,15 @@ final class _Reach {
     final entity = decodeRow(data, codec) as Map<String, Object?>;
     final migration = this.migration;
     if (migration == null) return entity;
+    // Typed by its `__typename`: a custom `identify` may key it otherwise
+    // (`Membre:1` for a `User`). The key's prefix only when it has none.
     final colon = key.indexOf(':');
+    final typename = switch (entity['__typename']) {
+      final String typename => typename,
+      _ => colon <= 0 ? null : key.substring(0, colon),
+    };
     migration.changed = false;
-    if (colon <= 0 || !migration.object(entity, key.substring(0, colon))) {
+    if (typename == null || !migration.object(entity, typename)) {
       incompatible.add(key);
       return null;
     }
