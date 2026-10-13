@@ -2,7 +2,7 @@ name: sling_gql_sqflite
 description: >-
   Persist sling_gql's normalized cache in SQLite with sqflite: a bounded
   write-behind copy saved as deltas and loaded before the client starts.
-version: 1.0.1
+version: 1.1.0
 repository: https://github.com/tpucci/sling_gql
 homepage: https://tpucci.github.io/sling_gql/guides/persistence/
 issue_tracker: https://github.com/tpucci/sling_gql/issues

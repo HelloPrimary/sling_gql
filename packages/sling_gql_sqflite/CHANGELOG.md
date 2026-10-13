@@ -1,3 +1,8 @@
+## 1.1.0
+
+ - **FIX**(sling_gql_sqflite): migration types an entity by its __typename. ([793e114f](https://github.com/tpucci/sling_gql/commit/793e114fbc190ff10d4cf3e5c58292ccfe8d49cb))
+ - **FEAT**(sling_gql_sqflite): open accepts the cache's normalization. ([3854a58a](https://github.com/tpucci/sling_gql/commit/3854a58a4592b08b4c5ed60e534ed0bf4684a746))
+
 ## 1.0.1
 
  - Update a dependency to the latest release.
