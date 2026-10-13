@@ -41,6 +41,12 @@ Future<void> main() async {
 listening** to it — there is no `attach` step. Build the client with `persistence.cache`
 and the app starts warm.
 
+A cache with custom identities (an id only unique with another field) passes them as
+`open(normalization: Normalization(identify: …))`: the restored entities and the new ones
+are keyed alike. The stored keys are the ones it produced, so changing them needs a cold
+start (a new path or codec id); with `hydrateInIsolate` the `identify` function must be
+top-level or static.
+
 The example app does exactly this on iOS and Android (`example/lib/persisted_cache.dart`); its web
 build keeps an in-memory cache through a conditional import, and compiles no sqflite code.
 
