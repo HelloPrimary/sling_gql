@@ -2947,11 +2947,14 @@ class SlingClient<Q extends Accessor> {
   /// flight already covers it: [scope] then waits for that one instead (no
   /// new request will be caused).
   bool _enqueueLeaf(Selection leaf, QueryScope<Q> scope) {
-    final single = _singleton(leaf);
+    // Built only when a batch is in flight: a first build misses every
+    // field, and nothing is in flight then.
+    Selection? single;
     for (final batch in _inflight) {
       // An aborted batch brings nothing: joining it would only re-run the
       // scope once it is dropped, and fetch then.
-      if (batch.cancel.isCancelled || !batch.tree.covers(single)) continue;
+      if (batch.cancel.isCancelled) continue;
+      if (!batch.tree.covers(single ??= _singleton(leaf))) continue;
       batch.scopes.add(scope);
       return false;
     }
