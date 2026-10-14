@@ -218,7 +218,7 @@ const slingSchema = SlingSchema<Query, Mutation>(
   fields: _slingFields,
   enums: _slingEnums,
   possibleTypes: _slingPossibleTypes,
-  hash: '1gpdixz1at5r0b',
+  hash: 'vvnty11vh5vsv',
 );
 
 /// Typed, non-fetching cache access for this schema's keyed types:
@@ -751,6 +751,15 @@ const _slingFields = <String, Map<String, String>>{
     'stats': 'Stats!',
     'search': '(text: String!, first: Int = 20) [SearchResult!]!',
     'node': '(id: ID!) Node',
+  },
+  'ROOT_MUTATION': {
+    'toggleFavorite': '(launchId: ID!) Launch!',
+    'scheduleLaunch': '(input: ScheduleLaunchInput!) Launch!',
+    'updateLaunchStatus': '(id: ID!, status: LaunchStatus!) Launch!',
+  },
+  'ROOT_SUBSCRIPTION': {
+    'launchStatusChanged': 'Launch!',
+    'launchScheduled': 'Launch!',
   },
   'PageInfo': {
     'hasNextPage': 'Boolean!',

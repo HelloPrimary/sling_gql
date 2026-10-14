@@ -396,8 +396,8 @@ void main() {
   });
 
   group('slingSchema.fields', () {
-    test('lists every object type\'s field signatures, the query root as '
-        'ROOT_QUERY', () {
+    test('lists every object type\'s field signatures, the roots as '
+        'ROOT_QUERY, ROOT_MUTATION and ROOT_SUBSCRIPTION', () {
       expect(
         code,
         contains('const _slingFields = <String, Map<String, String>>{'),
@@ -422,6 +422,20 @@ void main() {
         ),
       );
       expect(code, contains("  'Tally': {'totalCount': 'Int!'},"));
+      expect(
+        code,
+        contains(
+          "  'ROOT_MUTATION': {'noop': 'Boolean', "
+          "'rename': '(id: ID!, name: String!) User!'},",
+        ),
+      );
+      expect(
+        code,
+        contains(
+          "  'ROOT_SUBSCRIPTION': {'userChanged': 'User!', "
+          "'userRenamed': '(id: ID!) User!'},",
+        ),
+      );
       // Roots not used as a field type, enums and inputs are not listed.
       for (final name in ['Query', 'Mutation', 'Subscription']) {
         expect(code, isNot(contains("  '$name': {")));

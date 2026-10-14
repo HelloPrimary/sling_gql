@@ -175,6 +175,8 @@ String generate(
   _emitFields(
     out,
     queryType: queryType,
+    mutationType: hasMutation ? mutationType : null,
+    subscriptionType: hasSubscription ? subscriptionType : null,
     objectTypes: [
       for (final t in objectTypes)
         if (!rootNames.contains(t.name) || _isFieldType(schema, t.name)) t,
@@ -330,14 +332,17 @@ bool _isFieldType(IntrospectionSchema schema, String typeName) =>
 
 /// `slingSchema.fields`: every field with its signature (see
 /// [_fieldSignature]), per object type, the query root as `ROOT_QUERY` (its
-/// cache key); a root type also used as a field type is listed under its
-/// name too. Interfaces and unions are listed without fields: cached
+/// cache key), the mutation and subscription roots as `ROOT_MUTATION` and
+/// `ROOT_SUBSCRIPTION` (never cached: test helpers read them); a root type
+/// also used as a field type is listed under its name too. Interfaces and unions are listed without fields: cached
 /// objects always carry their concrete `__typename`, the entry only says
 /// the type is not a scalar. Persistence adapters use it to migrate a store
 /// across schema changes.
 void _emitFields(
   StringBuffer out, {
   required GqlType queryType,
+  required GqlType? mutationType,
+  required GqlType? subscriptionType,
   required List<GqlType> objectTypes,
   required List<GqlType> abstractTypes,
 }) {
@@ -359,6 +364,8 @@ void _emitFields(
     )
     ..writeln('const $_fieldsName = <String, Map<String, String>>{');
   entry('ROOT_QUERY', queryType);
+  if (mutationType != null) entry('ROOT_MUTATION', mutationType);
+  if (subscriptionType != null) entry('ROOT_SUBSCRIPTION', subscriptionType);
   for (final t in objectTypes) {
     entry(t.name, t);
   }
