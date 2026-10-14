@@ -450,6 +450,10 @@ the `--key-field`, so `SlingClient(schema: slingSchema)` needs no other wiring
 name → signature (`'(id: ID!, first: Int = 10) [Launch!]!'`), every object
 type, the query root as `ROOT_QUERY` (and under its name only when a field
 returns it), interfaces/unions as `{}`; what the sqflite migration compares.
+`enums` and `possibleTypes` (`_slingEnums`, `_slingPossibleTypes`): each
+enum's values and each interface's/union's concrete types, which
+`MockGraphQLServer(schema:)` uses to fill the fields a test leaves out; the
+runtime never reads them.
 
 The generator decides which types are *keyed* (have a scalar `--key-field`,
 default `id`) and which fields are *lookups* (single `id` argument returning a

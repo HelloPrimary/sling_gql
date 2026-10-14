@@ -216,7 +216,9 @@ const slingSchema = SlingSchema<Query, Mutation>(
   subscription: Subscription.root,
   keyField: 'id',
   fields: _slingFields,
-  hash: 'mh9vp50pvsyb0',
+  enums: _slingEnums,
+  possibleTypes: _slingPossibleTypes,
+  hash: '1gpdixz1at5r0b',
 );
 
 /// Typed, non-fetching cache access for this schema's keyed types:
@@ -880,4 +882,24 @@ const _slingFields = <String, Map<String, String>>{
   },
   'Node': {},
   'SearchResult': {},
+};
+
+/// `slingSchema.enums`: each enum's values.
+const _slingEnums = <String, List<String>>{
+  'LaunchStatus': [
+    'SCHEDULED',
+    'IN_FLIGHT',
+    'SUCCESS',
+    'FAILURE',
+    'PARTIAL_FAILURE',
+    'SCRUBBED',
+  ],
+  'LaunchOrder': ['DATE_ASC', 'DATE_DESC', 'NAME_ASC'],
+  'RocketFamily': ['FALCON', 'STARSHIP', 'ATLAS', 'ARIANE', 'VULCAN'],
+};
+
+/// `slingSchema.possibleTypes`: each interface's and union's concrete types.
+const _slingPossibleTypes = <String, List<String>>{
+  'Node': ['Rocket', 'Launchpad', 'Astronaut', 'Launch'],
+  'SearchResult': ['Launch', 'Rocket', 'Astronaut'],
 };

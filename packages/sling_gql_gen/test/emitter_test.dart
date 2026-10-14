@@ -376,7 +376,7 @@ void main() {
         RegExp(
           r'const slingSchema = SlingSchema<Query, Mutation>\(query: Query\.root, '
           r'mutation: Mutation\.root, subscription: Subscription\.root, '
-          r"keyField: 'id', fields: _slingFields, hash: '[0-9a-z]+'\);",
+          r"keyField: 'id', fields: _slingFields, enums: _slingEnums, possibleTypes: _slingPossibleTypes, hash: '[0-9a-z]+'\);",
         ),
       ),
     );
@@ -387,7 +387,12 @@ void main() {
       IntrospectionSchema.fromJson(_schemaJson),
       keyField: 'uuid',
     );
-    expect(code, contains("keyField: 'uuid', fields: _slingFields, hash: '"));
+    expect(
+      code,
+      contains(
+        "keyField: 'uuid', fields: _slingFields, enums: _slingEnums, possibleTypes: _slingPossibleTypes, hash: '",
+      ),
+    );
   });
 
   group('slingSchema.fields', () {
@@ -423,6 +428,18 @@ void main() {
       }
       expect(code, isNot(contains("  'UserStatus': {")));
       expect(code, isNot(contains("  'UserFilter': {")));
+    });
+
+    test('slingSchema.enums lists every enum\'s values in schema order', () {
+      expect(
+        code,
+        contains(
+          'const _slingEnums = <String, List<String>>{\n'
+          "  'UserStatus': ['ACTIVE', 'INACTIVE', 'ON_HOLD', 'UNKNOWN', "
+          "'default', 'on_hold'],\n"
+          '};',
+        ),
+      );
     });
 
     test('argument defaults are part of the signature; abstract types and '
@@ -543,7 +560,7 @@ void main() {
       contains(
         'const slingSchema = SlingSchema<Query, Mutation>(query: Query.root, '
         "mutation: Mutation.root, keyField: 'id', fields: _slingFields, "
-        "hash: '",
+        "enums: _slingEnums, possibleTypes: _slingPossibleTypes, hash: '",
       ),
     );
   });
@@ -618,7 +635,7 @@ void main() {
       contains(
         'const slingSchema = SlingSchema<Query, Accessor>(query: Query.root, '
         "subscription: Subscription.root, keyField: 'id', "
-        "fields: _slingFields, hash: '",
+        "fields: _slingFields, enums: _slingEnums, possibleTypes: _slingPossibleTypes, hash: '",
       ),
     );
   });
@@ -1040,6 +1057,19 @@ void main() {
           "args: {'id': Arg('ID!', id)}, keyed: true);",
         ),
         reason: 'an interface with the key field is keyed; never a lookup',
+      );
+    });
+
+    test('slingSchema.possibleTypes lists each abstract type\'s concrete '
+        'types', () {
+      expect(
+        code,
+        contains(
+          'const _slingPossibleTypes = <String, List<String>>{\n'
+          "  'Node': ['User', 'Bot'],\n"
+          "  'SearchResult': ['User', 'Bot', 'Note'],\n"
+          '};',
+        ),
       );
     });
 

@@ -181,6 +181,12 @@ String generate(
     ],
     abstractTypes: abstractTypes,
   );
+  out.writeln();
+  _emitEnumsAndPossibleTypes(
+    out,
+    enumTypes: enumTypes,
+    abstractTypes: abstractTypes,
+  );
 
   final code = out.toString();
   return code.replaceFirst(
@@ -303,12 +309,19 @@ void _emitSlingSchema(
       '${mutation ? ', mutation: Mutation.root' : ''}'
       '${subscription ? ', subscription: Subscription.root' : ''}'
       ', keyField: ${dartStringLiteral(keyField)}, fields: $_fieldsName, '
+      'enums: $_enumsName, possibleTypes: $_possibleTypesName, '
       '${_hashArgument(_hashPlaceholder)});',
     );
 }
 
 /// The constant behind `slingSchema.fields`.
 const _fieldsName = '_slingFields';
+
+/// The constant behind `slingSchema.enums`.
+const _enumsName = '_slingEnums';
+
+/// The constant behind `slingSchema.possibleTypes`.
+const _possibleTypesName = '_slingPossibleTypes';
 
 /// True when a field of the schema returns [typeName] (a root type used as
 /// an ordinary object, e.g. Relay's `query: Query!` on a payload).
@@ -353,6 +366,38 @@ void _emitFields(
     out.writeln('  ${dartStringLiteral(t.name)}: {},');
   }
   out.writeln('};');
+}
+
+/// `slingSchema.enums` (each enum's values) and `slingSchema.possibleTypes`
+/// (each interface's and union's concrete types): facts for test helpers.
+void _emitEnumsAndPossibleTypes(
+  StringBuffer out, {
+  required List<GqlType> enumTypes,
+  required List<GqlType> abstractTypes,
+}) {
+  void entries(String name, String doc, Map<String, List<String>> values) {
+    out
+      ..writeln(doc)
+      ..writeln('const $name = <String, List<String>>{');
+    for (final MapEntry(:key, :value) in values.entries) {
+      out.writeln(
+        '  ${dartStringLiteral(key)}: '
+        '[${value.map(dartStringLiteral).join(', ')}],',
+      );
+    }
+    out.writeln('};');
+  }
+
+  entries(_enumsName, "/// `slingSchema.enums`: each enum's values.", {
+    for (final t in enumTypes) t.name: [for (final v in t.enumValues) v.name],
+  });
+  out.writeln();
+  entries(
+    _possibleTypesName,
+    "/// `slingSchema.possibleTypes`: each interface's and union's concrete "
+    'types.',
+    {for (final t in abstractTypes) t.name: t.possibleTypes},
+  );
 }
 
 /// `'[Launch!]!'`, or `'(id: ID!, limit: Int = 10) Launch'` with arguments:
