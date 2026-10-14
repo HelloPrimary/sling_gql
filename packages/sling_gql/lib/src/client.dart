@@ -35,6 +35,8 @@ class SlingSchema<Q extends Accessor, M extends Accessor> {
     this.keyField = 'id',
     this.hash,
     this.fields,
+    this.enums,
+    this.possibleTypes,
   });
 
   final RootFactory<Q> query;
@@ -75,6 +77,18 @@ class SlingSchema<Q extends Accessor, M extends Accessor> {
   /// and, when the hash changes, keeps the cached fields whose signature did
   /// not change instead of dropping everything.
   final Map<String, Map<String, String>>? fields;
+
+  /// The values of the schema's enums, by GraphQL type name, in schema
+  /// order. The generator emits it; `null` for a hand-written schema.
+  ///
+  /// The runtime never reads it: test helpers build values from it.
+  final Map<String, List<String>>? enums;
+
+  /// The concrete types of the schema's interfaces and unions, by GraphQL
+  /// type name. The generator emits it; `null` for a hand-written schema.
+  ///
+  /// The runtime never reads it: test helpers build values from it.
+  final Map<String, List<String>>? possibleTypes;
 }
 
 /// True when asserts are enabled (debug builds and tests).
