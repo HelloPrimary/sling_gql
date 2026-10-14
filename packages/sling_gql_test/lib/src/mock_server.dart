@@ -354,7 +354,7 @@ class MockGraphQLServer {
         field,
         [field.alias],
         errors,
-        type: op.type == 'query' ? _fieldType('ROOT_QUERY', field.name) : null,
+        type: _fieldType('ROOT_${op.type.toUpperCase()}', field.name),
       );
     }
     return {'data': data, if (errors.isNotEmpty) 'errors': errors};
@@ -430,7 +430,13 @@ class MockGraphQLServer {
           final errors = <Map<String, Object?>>[];
           Object? data;
           try {
-            data = await _project(value, field, [field.alias], errors);
+            data = await _project(
+              value,
+              field,
+              [field.alias],
+              errors,
+              type: _fieldType('ROOT_SUBSCRIPTION', field.name),
+            );
           } on MockGraphQLError catch (e) {
             errors.add({
               'message': e.message,

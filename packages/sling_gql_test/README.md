@@ -81,7 +81,7 @@ fails.
 
 With `schema:`, an object of an object type needs no `__typename` either: the
 server takes it from the field's type. Write it only for an interface or a
-union (which concrete type?) and at the root of a mutation or subscription.
+union: which concrete type?
 
 ### Subscriptions
 

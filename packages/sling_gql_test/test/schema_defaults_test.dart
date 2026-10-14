@@ -9,6 +9,8 @@ const _schema = SlingSchema<Query, Mutation>(
   query: Query.root,
   fields: {
     'ROOT_QUERY': {'me': 'User!', 'user': '(id: ID!) User'},
+    'ROOT_MUTATION': {'rename': '(id: ID!, name: String!) User!'},
+    'ROOT_SUBSCRIPTION': {'userChanged': 'User'},
     'User': {
       'id': 'ID!',
       'name': 'String!',
@@ -185,6 +187,40 @@ void main() {
             {'__typename': 'User', 'id': 'f1'},
           ],
         },
+      });
+    });
+
+    test('infers the __typename at the root of a mutation', () async {
+      final server = MockGraphQLServer(
+        schema: _schema,
+        mutation: {
+          'rename': (Map<String, Object?> args) => {'name': args['name']},
+        },
+      );
+
+      final result = await server.execute(
+        'mutation { rename(id: "1", name: "Bo") { __typename id name } }',
+      );
+
+      expect(result['data'], {
+        'rename': {'__typename': 'User', 'id': 'rename', 'name': 'Bo'},
+      });
+    });
+
+    test('infers the __typename at the root of a subscription', () async {
+      final server = MockGraphQLServer(
+        schema: _schema,
+        subscription: {
+          'userChanged': Stream.value({'id': '1', 'name': 'Ada'}),
+        },
+      );
+
+      final result = await server
+          .subscribe('subscription { userChanged { __typename name } }')
+          .single;
+
+      expect(result['data'], {
+        'userChanged': {'__typename': 'User', 'name': 'Ada'},
       });
     });
 
