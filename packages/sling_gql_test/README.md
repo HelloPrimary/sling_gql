@@ -51,6 +51,34 @@ server.failNext(const MockFailure.network());
 
 `server.client(...)` takes `retry:`, `timeout:`, `errorPolicy:` and `auth:`.
 
+### Fields the data leaves out
+
+Pass the generated `slingSchema` and the server fills the selected fields an
+object leaves out, from their type: `null` when nullable, `[]` for a list,
+`'Type.field'`, `0`, `0.0`, `false` for built-in scalars, the object's path for
+the key field (so generated objects never merge in the cache), an enum's first
+value, an interface's or union's first concrete type, and `{'__typename': 'T'}`
+for an object, filled the same way. `defaults:` gives, by type name, the value
+of custom scalars or overrides any of these; for an object type, the fields its
+objects start from:
+
+```dart
+final server = MockGraphQLServer(
+  schema: slingSchema,
+  defaults: {
+    'DateTime': '2021-01-01T00:00:00Z',
+    'Launch': {'name': 'FalconSat'},
+  },
+  query: {
+    'launches': [{'__typename': 'Launch', 'id': '1'}], // the rest is filled
+  },
+);
+```
+
+A field with no default (a custom scalar missing from `defaults:`) fails the
+test, naming the type. Root fields are never filled: a missing one still
+fails.
+
 ### Subscriptions
 
 `subscription:` fields are `Stream`s (or resolvers returning one); each value

@@ -164,7 +164,10 @@ class MockGraphQLServer {
     Map<String, Object?> mutation = const {},
     Map<String, Object?> subscription = const {},
     this.latency = Duration.zero,
-  }) : query = Map.of(query),
+    this._schema,
+    Map<String, Object?> defaults = const {},
+  }) : defaults = Map.of(defaults),
+       query = Map.of(query),
        mutation = Map.of(mutation),
        subscription = Map.of(subscription);
 
@@ -180,6 +183,14 @@ class MockGraphQLServer {
   /// [Resolver] returning one. A stream error ends the subscription with a
   /// transport error; the stream closing completes it.
   final Map<String, Object?> subscription;
+
+  /// With a `schema:`, what a selected field the data leaves out resolves
+  /// to, by type name: the value of a field of that type (an enum value, a
+  /// custom scalar, an object of a concrete type for an interface or union),
+  /// and for an object type, the fields its objects start from. Mutable.
+  final Map<String, Object?> defaults;
+
+  final SlingSchema? _schema;
 
   /// Subscriptions currently open (listened to and not yet cancelled or
   /// completed) — assert `0` after a `SubscriptionBuilder` unmounts.
@@ -560,6 +571,28 @@ class MockGraphQLServer {
         continue;
       }
       if (!object.containsKey(sub.name)) {
+        final typename = object['__typename'];
+        final base = defaults[typename];
+        if (base is Map && base.containsKey(sub.name)) {
+          out[sub.alias] = await _resolve(base[sub.name], sub, [
+            ...path,
+            sub.alias,
+          ], errors);
+          continue;
+        }
+        final signature = _schema?.fields?[typename]?[sub.name];
+        if (signature != null) {
+          out[sub.alias] = await _resolve(
+            _default(typename as String, sub.name, signature, [
+              ...path,
+              sub.alias,
+            ]),
+            sub,
+            [...path, sub.alias],
+            errors,
+          );
+          continue;
+        }
         throw StateError(
           'MockGraphQLServer: the object at ${_pathString(path)} '
           '(${object['__typename']}) has no field "${sub.name}"',
@@ -570,6 +603,50 @@ class MockGraphQLServer {
         sub.alias,
       ], errors);
     }
+  }
+
+  /// The value of [field] on [typename], whose schema [signature] is
+  /// `'(args) [Type!]!'`, when the data leaves it out.
+  Object? _default(
+    String typename,
+    String field,
+    String signature,
+    List<Object> path,
+  ) {
+    final type = signature.startsWith('(')
+        ? signature.substring(signature.lastIndexOf(') ') + 2)
+        : signature;
+    if (!type.endsWith('!')) return null;
+    if (type.startsWith('[')) return <Object?>[];
+    final name = type.substring(0, type.length - 1);
+    // The object's path: unique per position, so generated objects never
+    // merge in the normalized cache.
+    if (field == _schema!.keyField) {
+      return _pathString(path.sublist(0, path.length - 1));
+    }
+    if (defaults.containsKey(name)) {
+      final value = defaults[name];
+      return value is Map ? {'__typename': name, ...value} : value;
+    }
+    switch (name) {
+      case 'String' || 'ID':
+        return '$typename.$field';
+      case 'Int':
+        return 0;
+      case 'Float':
+        return 0.0;
+      case 'Boolean':
+        return false;
+    }
+    if (_schema.enums?[name] case [final first, ...]) return first;
+    if (_schema.possibleTypes?[name] case [final first, ...]) {
+      return {'__typename': first};
+    }
+    if (_schema.fields?[name]?.isNotEmpty ?? false) return {'__typename': name};
+    throw StateError(
+      'MockGraphQLServer: no default for ${_pathString(path)} ($name!) — '
+      "add it to the data or to defaults: {'$name': ...}",
+    );
   }
 
   static FutureOr<Object?> _invoke(Object? source, Map<String, Object?> args) {
