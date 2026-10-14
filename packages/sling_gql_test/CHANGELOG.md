@@ -1,3 +1,7 @@
+## 1.1.1
+
+ - **FIX**(sling_gql_test): a nullable key field the data leaves out gets the object's path. ([1d49b0f5](https://github.com/tpucci/sling_gql/commit/1d49b0f5c19125313361871910fc95c2354cbc9d))
+
 ## 1.1.0
 
  - **FEAT**(sling_gql_test): MockGraphQLServer(schema:) fills the fields a test leaves out. ([5974b663](https://github.com/tpucci/sling_gql/commit/5974b66337ae773dc68a2f1c0b986c2b6a31f4c5))
