@@ -349,9 +349,13 @@ class MockGraphQLServer {
           'MockGraphQLServer(${op.type}: {...})',
         );
       }
-      data[field.alias] = await _resolve(roots[field.name], field, [
-        field.alias,
-      ], errors);
+      data[field.alias] = await _resolve(
+        roots[field.name],
+        field,
+        [field.alias],
+        errors,
+        type: op.type == 'query' ? _fieldType('ROOT_QUERY', field.name) : null,
+      );
     }
     return {'data': data, if (errors.isNotEmpty) 'errors': errors};
   }
@@ -489,12 +493,14 @@ class MockGraphQLServer {
     ],
   };
 
+  /// [type]: the field's named type in the schema, when known.
   Future<Object?> _resolve(
     Object? source,
     ParsedField field,
     List<Object> path,
-    List<Map<String, Object?>> errors,
-  ) async {
+    List<Map<String, Object?>> errors, {
+    String? type,
+  }) async {
     Object? value;
     try {
       value = await _invoke(source, field.args);
@@ -506,20 +512,21 @@ class MockGraphQLServer {
       });
       return null;
     }
-    return _project(value, field, path, errors);
+    return _project(value, field, path, errors, type: type);
   }
 
   Future<Object?> _project(
     Object? value,
     ParsedField field,
     List<Object> path,
-    List<Map<String, Object?>> errors,
-  ) async {
+    List<Map<String, Object?>> errors, {
+    String? type,
+  }) async {
     if (value == null) return null;
     if (value is List) {
       return [
         for (var i = 0; i < value.length; i++)
-          await _project(value[i], field, [...path, i], errors),
+          await _project(value[i], field, [...path, i], errors, type: type),
       ];
     }
     // Scalars pass through (a `Map` here is a JSON-like custom scalar).
@@ -530,9 +537,13 @@ class MockGraphQLServer {
         '(${field.selection.join(', ')}) but the data is ${value.runtimeType}',
       );
     }
+    final object = value.cast<String, Object?>();
     final out = <String, Object?>{};
     await _projectInto(
-      value.cast<String, Object?>(),
+      // A concrete type's objects need no `__typename` in the data.
+      !object.containsKey('__typename') && _isObjectType(type)
+          ? {'__typename': type, ...object}
+          : object,
       field.selection,
       path,
       errors,
@@ -574,10 +585,13 @@ class MockGraphQLServer {
         final typename = object['__typename'];
         final base = defaults[typename];
         if (base is Map && base.containsKey(sub.name)) {
-          out[sub.alias] = await _resolve(base[sub.name], sub, [
-            ...path,
-            sub.alias,
-          ], errors);
+          out[sub.alias] = await _resolve(
+            base[sub.name],
+            sub,
+            [...path, sub.alias],
+            errors,
+            type: _fieldType(typename, sub.name),
+          );
           continue;
         }
         final signature = _schema?.fields?[typename]?[sub.name];
@@ -590,6 +604,7 @@ class MockGraphQLServer {
             sub,
             [...path, sub.alias],
             errors,
+            type: _fieldType(typename, sub.name),
           );
           continue;
         }
@@ -598,12 +613,31 @@ class MockGraphQLServer {
           '(${object['__typename']}) has no field "${sub.name}"',
         );
       }
-      out[sub.alias] = await _resolve(object[sub.name], sub, [
-        ...path,
-        sub.alias,
-      ], errors);
+      out[sub.alias] = await _resolve(
+        object[sub.name],
+        sub,
+        [...path, sub.alias],
+        errors,
+        type: _fieldType(object['__typename'], sub.name),
+      );
     }
   }
+
+  /// The named type of [field] on [typename] (`'[Launch!]!'` → `Launch`),
+  /// when the schema lists it.
+  String? _fieldType(Object? typename, String field) {
+    final signature = _schema?.fields?[typename]?[field];
+    if (signature == null) return null;
+    final type = signature.startsWith('(')
+        ? signature.substring(signature.lastIndexOf(') ') + 2)
+        : signature;
+    return type.replaceAll(RegExp(r'[\[\]!]'), '');
+  }
+
+  /// True for an object type of the schema (interfaces and unions are
+  /// listed without fields).
+  bool _isObjectType(String? type) =>
+      _schema?.fields?[type]?.isNotEmpty ?? false;
 
   /// The value of [field] on [typename], whose schema [signature] is
   /// `'(args) [Type!]!'`, when the data leaves it out.
@@ -643,7 +677,7 @@ class MockGraphQLServer {
     if (_schema.possibleTypes?[name] case [final first, ...]) {
       return {'__typename': first};
     }
-    if (_schema.fields?[name]?.isNotEmpty ?? false) return {'__typename': name};
+    if (_isObjectType(name)) return {'__typename': name};
     throw StateError(
       'MockGraphQLServer: no default for ${_pathString(path)} ($name!) — '
       "add it to the data or to defaults: {'$name': ...}",

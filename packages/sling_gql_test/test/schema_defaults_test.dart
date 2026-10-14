@@ -157,6 +157,59 @@ void main() {
       );
     });
 
+    test('infers the __typename of an object type', () async {
+      final server = MockGraphQLServer(
+        schema: _schema,
+        query: {
+          'me': {
+            'name': 'Ada',
+            'best': {'name': 'Bob'},
+            'friends': [
+              {'id': 'f1'},
+            ],
+          },
+        },
+      );
+
+      final result = await server.execute(
+        '{ me { __typename name best { __typename name } '
+        'friends(limit: 1) { __typename id } } }',
+      );
+
+      expect(result['data'], {
+        'me': {
+          '__typename': 'User',
+          'name': 'Ada',
+          'best': {'__typename': 'User', 'name': 'Bob'},
+          'friends': [
+            {'__typename': 'User', 'id': 'f1'},
+          ],
+        },
+      });
+    });
+
+    test('still needs the __typename of an interface\'s object', () async {
+      final server = MockGraphQLServer(
+        schema: _schema,
+        query: {
+          'me': {
+            'pet': {'name': 'Rex'},
+          },
+        },
+      );
+
+      expect(
+        () => server.execute('{ me { pet { __typename } } }'),
+        throwsA(
+          isA<StateError>().having(
+            (e) => e.message,
+            'message',
+            contains("no '__typename'"),
+          ),
+        ),
+      );
+    });
+
     test('still fails on a missing root field', () async {
       final server = MockGraphQLServer(schema: _schema);
 

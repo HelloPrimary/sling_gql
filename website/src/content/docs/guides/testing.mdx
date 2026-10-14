@@ -91,7 +91,10 @@ final server = MockGraphQLServer(
 ```
 
 A custom scalar missing from `defaults:` still fails, naming the type; root
-fields are never filled.
+fields are never filled. The objects you do write need no `__typename` when their
+field's type is an object type: the server takes it from the schema. Write it
+only for an interface or a union, and at the root of a mutation or
+subscription.
 
 Throw `MockGraphQLError('message')` from a resolver to produce an `errors[]`
 entry with the right `path` — the field resolves to `null`, siblings still

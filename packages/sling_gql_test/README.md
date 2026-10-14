@@ -79,6 +79,10 @@ A field with no default (a custom scalar missing from `defaults:`) fails the
 test, naming the type. Root fields are never filled: a missing one still
 fails.
 
+With `schema:`, an object of an object type needs no `__typename` either: the
+server takes it from the field's type. Write it only for an interface or a
+union (which concrete type?) and at the root of a mutation or subscription.
+
 ### Subscriptions
 
 `subscription:` fields are `Stream`s (or resolvers returning one); each value
