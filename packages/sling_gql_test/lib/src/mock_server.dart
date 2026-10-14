@@ -616,14 +616,15 @@ class MockGraphQLServer {
     final type = signature.startsWith('(')
         ? signature.substring(signature.lastIndexOf(') ') + 2)
         : signature;
+    // The object's path, even when the key is nullable: unique per
+    // position, so generated objects are keyed and never merge in the
+    // normalized cache.
+    if (field == _schema!.keyField && !type.startsWith('[')) {
+      return _pathString(path.sublist(0, path.length - 1));
+    }
     if (!type.endsWith('!')) return null;
     if (type.startsWith('[')) return <Object?>[];
     final name = type.substring(0, type.length - 1);
-    // The object's path: unique per position, so generated objects never
-    // merge in the normalized cache.
-    if (field == _schema!.keyField) {
-      return _pathString(path.sublist(0, path.length - 1));
-    }
     if (defaults.containsKey(name)) {
       final value = defaults[name];
       return value is Map ? {'__typename': name, ...value} : value;

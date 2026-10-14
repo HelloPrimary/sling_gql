@@ -19,10 +19,12 @@ const _schema = SlingSchema<Query, Mutation>(
       'joined': 'Date!',
       'pet': 'Pet!',
       'best': 'User!',
+      'tag': 'Tag!',
       'friends': '(limit: Int) [User!]!',
     },
     'Pet': {},
     'Dog': {'name': 'String!'},
+    'Tag': {'id': 'ID', 'label': 'String'},
   },
   enums: {
     'Status': ['ACTIVE', 'BANNED'],
@@ -117,6 +119,23 @@ void main() {
         });
       },
     );
+
+    test('gives a nullable key field the object\'s path', () async {
+      final server = MockGraphQLServer(
+        schema: _schema,
+        query: {
+          'me': {'__typename': 'User'},
+        },
+      );
+
+      final result = await server.execute('{ me { tag { id label } } }');
+
+      expect(result['data'], {
+        'me': {
+          'tag': {'id': 'me.tag', 'label': null},
+        },
+      });
+    });
 
     test('fails naming the type when no default can be made', () async {
       final server = MockGraphQLServer(
