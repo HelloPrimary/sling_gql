@@ -1,3 +1,8 @@
+## 1.2.0
+
+ - **FEAT**(sling_gql_test): __typename is inferred at the root of mutations and subscriptions. ([fafb9b1c](https://github.com/tpucci/sling_gql/commit/fafb9b1ca9d4d98ce896b20bec450d3af36f4ba5))
+ - **FEAT**(sling_gql_test): MockGraphQLServer(schema:) infers the __typename of object types. ([a95a320d](https://github.com/tpucci/sling_gql/commit/a95a320dbb1d4d174436e0cf542fb8ecf3e2ce7c))
+
 ## 1.1.1
 
  - **FIX**(sling_gql_test): a nullable key field the data leaves out gets the object's path. ([1d49b0f5](https://github.com/tpucci/sling_gql/commit/1d49b0f5c19125313361871910fc95c2354cbc9d))

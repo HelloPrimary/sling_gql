@@ -1,3 +1,7 @@
+## 1.4.0
+
+ - **FEAT**(sling_gql_gen): slingSchema.fields lists the mutation and subscription roots. ([0a0f4445](https://github.com/tpucci/sling_gql/commit/0a0f444521a6229a7cec7963eca9e9dc5a3c920f))
+
 ## 1.3.0
 
  - **FEAT**(sling_gql_gen): slingSchema carries enums and possibleTypes (needs sling_gql 1.2.0). ([f668116a](https://github.com/tpucci/sling_gql/commit/f668116aa4f0c04974cac04ba7fa89578e274642))
