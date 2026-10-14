@@ -448,8 +448,9 @@ the `--key-field`, so `SlingClient(schema: slingSchema)` needs no other wiring
 `sling_gql_sqflite` migrates (or wipes) its store when it changes. And
 `fields` (`const _slingFields` at the end of the file): type name → field
 name → signature (`'(id: ID!, first: Int = 10) [Launch!]!'`), every object
-type, the query root as `ROOT_QUERY` (and under its name only when a field
-returns it), interfaces/unions as `{}`; what the sqflite migration compares.
+type, the roots as `ROOT_QUERY`, `ROOT_MUTATION`, `ROOT_SUBSCRIPTION` (a root
+also under its name only when a field returns it), interfaces/unions as `{}`;
+what the sqflite migration compares (only `ROOT_QUERY` is ever cached).
 `enums` and `possibleTypes` (`_slingEnums`, `_slingPossibleTypes`): each
 enum's values and each interface's/union's concrete types, which
 `MockGraphQLServer(schema:)` uses to fill the fields a test leaves out; the

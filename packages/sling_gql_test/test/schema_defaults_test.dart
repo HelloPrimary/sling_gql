@@ -9,6 +9,8 @@ const _schema = SlingSchema<Query, Mutation>(
   query: Query.root,
   fields: {
     'ROOT_QUERY': {'me': 'User!', 'user': '(id: ID!) User'},
+    'ROOT_MUTATION': {'rename': '(id: ID!, name: String!) User!'},
+    'ROOT_SUBSCRIPTION': {'userChanged': 'User'},
     'User': {
       'id': 'ID!',
       'name': 'String!',
@@ -152,6 +154,93 @@ void main() {
             (e) => e.message,
             'message',
             allOf(contains('Date'), contains('defaults')),
+          ),
+        ),
+      );
+    });
+
+    test('infers the __typename of an object type', () async {
+      final server = MockGraphQLServer(
+        schema: _schema,
+        query: {
+          'me': {
+            'name': 'Ada',
+            'best': {'name': 'Bob'},
+            'friends': [
+              {'id': 'f1'},
+            ],
+          },
+        },
+      );
+
+      final result = await server.execute(
+        '{ me { __typename name best { __typename name } '
+        'friends(limit: 1) { __typename id } } }',
+      );
+
+      expect(result['data'], {
+        'me': {
+          '__typename': 'User',
+          'name': 'Ada',
+          'best': {'__typename': 'User', 'name': 'Bob'},
+          'friends': [
+            {'__typename': 'User', 'id': 'f1'},
+          ],
+        },
+      });
+    });
+
+    test('infers the __typename at the root of a mutation', () async {
+      final server = MockGraphQLServer(
+        schema: _schema,
+        mutation: {
+          'rename': (Map<String, Object?> args) => {'name': args['name']},
+        },
+      );
+
+      final result = await server.execute(
+        'mutation { rename(id: "1", name: "Bo") { __typename id name } }',
+      );
+
+      expect(result['data'], {
+        'rename': {'__typename': 'User', 'id': 'rename', 'name': 'Bo'},
+      });
+    });
+
+    test('infers the __typename at the root of a subscription', () async {
+      final server = MockGraphQLServer(
+        schema: _schema,
+        subscription: {
+          'userChanged': Stream.value({'id': '1', 'name': 'Ada'}),
+        },
+      );
+
+      final result = await server
+          .subscribe('subscription { userChanged { __typename name } }')
+          .single;
+
+      expect(result['data'], {
+        'userChanged': {'__typename': 'User', 'name': 'Ada'},
+      });
+    });
+
+    test('still needs the __typename of an interface\'s object', () async {
+      final server = MockGraphQLServer(
+        schema: _schema,
+        query: {
+          'me': {
+            'pet': {'name': 'Rex'},
+          },
+        },
+      );
+
+      expect(
+        () => server.execute('{ me { pet { __typename } } }'),
+        throwsA(
+          isA<StateError>().having(
+            (e) => e.message,
+            'message',
+            contains("no '__typename'"),
           ),
         ),
       );

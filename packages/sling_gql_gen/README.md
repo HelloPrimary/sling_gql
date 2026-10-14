@@ -66,7 +66,8 @@ Flags:
   whenever the schema, `--key-field`, a `--scalar` mapping or the generator
   changes the output, and is the same on every run and platform; and
   `fields:` — every field of every object type with its signature
-  (`'(id: ID!) Launch'`, `'[String!]!'`; the query root as `ROOT_QUERY`,
+  (`'(id: ID!) Launch'`, `'[String!]!'`; the roots as `ROOT_QUERY`,
+  `ROOT_MUTATION` and `ROOT_SUBSCRIPTION`,
   interfaces and unions without fields), a `const` map at the end of the
   file. Persistence adapters (`sling_gql_sqflite`) migrate a store written
   under another hash along `fields`, keeping what the new code can still

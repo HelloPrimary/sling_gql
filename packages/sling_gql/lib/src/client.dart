@@ -70,8 +70,9 @@ class SlingSchema<Q extends Accessor, M extends Accessor> {
   /// The fields of the schema's object, interface and union types, by
   /// GraphQL type name, each with its signature: `'(id: ID!) Launch'`,
   /// `'[String!]!'` (arguments with their defaults, then the type). The
-  /// query root is listed as `ROOT_QUERY`, its cache key. The generator
-  /// emits it; `null` for a hand-written schema.
+  /// query root is listed as `ROOT_QUERY`, its cache key, the mutation and
+  /// subscription roots as `ROOT_MUTATION` and `ROOT_SUBSCRIPTION`. The
+  /// generator emits it; `null` for a hand-written schema.
   ///
   /// The runtime never reads it. A persisted cache stores it next to [hash]
   /// and, when the hash changes, keeps the cached fields whose signature did
