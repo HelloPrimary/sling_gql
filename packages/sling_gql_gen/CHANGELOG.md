@@ -1,3 +1,7 @@
+## 1.2.0
+
+ - **FEAT**(sling_gql_gen): slingSchema carries enums and possibleTypes (needs sling_gql 1.2.0). ([f668116a](https://github.com/tpucci/sling_gql/commit/f668116aa4f0c04974cac04ba7fa89578e274642))
+
 ## 1.1.1
 
  - **FIX**(sling_gql_gen): converter scalars on nullable input fields compile. ([20e2b4cd](https://github.com/tpucci/sling_gql/commit/20e2b4cd5996b239b56184b437d6e33a9807385c))

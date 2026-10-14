@@ -1,3 +1,7 @@
+## 1.2.0
+
+ - **FEAT**(sling_gql): SlingSchema.enums and possibleTypes. ([2d382331](https://github.com/tpucci/sling_gql/commit/2d38233117cf9034ad93ccadc62987d0e6e8c2cd))
+
 ## 1.1.0
 
  - **PERF**(sling_gql): a miss builds its singleton tree only when a batch is in flight. ([91a26d1c](https://github.com/tpucci/sling_gql/commit/91a26d1c95ddbf2566b6467353d688a5a806b496))

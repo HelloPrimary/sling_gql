@@ -1,3 +1,7 @@
+## 1.3.0
+
+ - **FEAT**(sling_gql_gen): slingSchema carries enums and possibleTypes (needs sling_gql 1.2.0). ([f668116a](https://github.com/tpucci/sling_gql/commit/f668116aa4f0c04974cac04ba7fa89578e274642))
+
 ## 1.2.0
 
  - **FEAT**(sling_gql): cancelQueries drops the responses in flight on sign-out. ([49b6e9b0](https://github.com/tpucci/sling_gql/commit/49b6e9b05fd88fbc8a92eca45d6b736bc4d1e81b))

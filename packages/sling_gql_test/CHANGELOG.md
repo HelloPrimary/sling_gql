@@ -1,3 +1,7 @@
+## 1.1.0
+
+ - **FEAT**(sling_gql_test): MockGraphQLServer(schema:) fills the fields a test leaves out. ([5974b663](https://github.com/tpucci/sling_gql/commit/5974b66337ae773dc68a2f1c0b986c2b6a31f4c5))
+
 ## 1.0.2
 
  - Update a dependency to the latest release.
