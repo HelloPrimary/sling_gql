@@ -64,8 +64,34 @@ requests and the next response reflects it.
 What the server checks for you, loudly (a `StateError`, not a silent `null`):
 
 - a root field the document selects that is not in `query:` / `mutation:`;
-- a sub-field selected on an object that does not have it;
+- a sub-field selected on an object that does not have it (unless
+  `schema:` fills it, below);
 - a selected object without `__typename`.
+
+Pass the generated `slingSchema` to write only the fields a test cares about:
+the server fills the other selected fields from their type. Nullable fields
+are `null`, lists `[]`, built-in scalars `'Type.field'`, `0`, `0.0`, `false`,
+the key field the object's path (generated objects never merge in the cache),
+an enum its first value, an interface or union its first concrete type, and an
+object `{'__typename': 'T'}`, filled the same way. `defaults:` gives, by type
+name, the value of custom scalars or overrides any of these; for an object
+type, the fields its objects start from:
+
+```dart
+final server = MockGraphQLServer(
+  schema: slingSchema,
+  defaults: {
+    'DateTime': '2021-01-01T00:00:00Z',
+    'Rocket': {'name': 'Falcon 9'},
+  },
+  query: {
+    'launch': (args) => {'__typename': 'Launch', 'id': args['id']},
+  },
+);
+```
+
+A custom scalar missing from `defaults:` still fails, naming the type; root
+fields are never filled.
 
 Throw `MockGraphQLError('message')` from a resolver to produce an `errors[]`
 entry with the right `path` — the field resolves to `null`, siblings still
