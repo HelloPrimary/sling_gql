@@ -1021,6 +1021,17 @@ void _normalizationTests() {
     },
   );
 
+  test('evict drops a ref from a list rewritten by a refetch', () async {
+    final h = Harness((q, v) => meWithFriends());
+    final scope = h.client.createScope(onChanged: () {});
+    scope.run((q) => q.me.friends().map((f) => f.name).toList());
+    await scope.whenSettled;
+    await scope.refetch();
+
+    h.client.cache.evict('User:a');
+    expect(h.client.cache.entity('User:1')!['friends'], [const Ref('User:b')]);
+  });
+
   test('snapshot round-trips through JSON and hydrates', () async {
     final h = Harness((q, v) => meWithFriends());
     await h.client.resolve((q) => q.me.friends().map((f) => f.name).toList());
