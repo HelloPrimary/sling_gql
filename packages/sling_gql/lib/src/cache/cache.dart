@@ -898,7 +898,7 @@ class NormalizedCache implements Cache {
     final resized = old.length != incoming.length;
     var changed = resized;
     _ListDepKeys? keys;
-    final merged = List<Object?>.filled(incoming.length, null);
+    final merged = List<Object?>.filled(incoming.length, null, growable: true);
     for (var i = 0; i < incoming.length; i++) {
       final previous = i < old.length ? old[i] : null;
       _changed = false;
