@@ -1,3 +1,7 @@
+## 1.2.1
+
+ - Update a dependency to the latest release.
+
 ## 1.2.0
 
  - **FEAT**(sling_gql_test): __typename is inferred at the root of mutations and subscriptions. ([fafb9b1c](https://github.com/tpucci/sling_gql/commit/fafb9b1ca9d4d98ce896b20bec450d3af36f4ba5))

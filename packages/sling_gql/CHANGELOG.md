@@ -1,3 +1,7 @@
+## 1.3.1
+
+ - **FIX**(sling_gql): lists merged by a refetch stay growable. ([23c28be1](https://github.com/tpucci/sling_gql/commit/23c28be1af6f2eda4e6150aecb4b3dc885abb071))
+
 ## 1.3.0
 
  - **FEAT**(sling_gql_gen): slingSchema.fields lists the mutation and subscription roots. ([0a0f4445](https://github.com/tpucci/sling_gql/commit/0a0f444521a6229a7cec7963eca9e9dc5a3c920f))
