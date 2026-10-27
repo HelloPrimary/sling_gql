@@ -189,9 +189,21 @@ on the code.
 
   ```sh
   melos run publish:dry-run          # pub.dev validation of both packages
-  melos version                      # bump + CHANGELOG + commit + tags <pkg>-vX.Y.Z
-  git push --follow-tags
+  melos version --yes                # bump + CHANGELOG + commit + tags <pkg>-vX.Y.Z
+  git push origin main               # the release commit only
+  git push origin <tag> <tag> <tag>  # tags, at most 3 per push (see below)
   ```
+
+  **Never `git push --follow-tags` a release that bumps more than 3
+  packages**: GitHub creates no workflow run at all when more than 3 tags
+  are pushed at once (seen on the 2026-10 move to `helloprimary`: 6 tags,
+  0 runs of `publish.yml`). Push the tags in batches of ≤ 3, `sling_gql`
+  first (its dependents need its new version on pub.dev), and wait for the
+  batch's runs to finish before the next one (`gh run list --workflow
+  publish.yml`). If tags were already pushed without a run, delete them on
+  the remote (`git push origin --delete <tag>`) and push them again in
+  batches; re-running a failed run from the Actions tab also works.
+  `melos version` has no `--no-select`; use `--yes`.
 
   `.github/workflows/publish.yml` runs once per `<pkg>-vX.Y.Z` tag, checks the
   tag matches that package's `pubspec.yaml`, and publishes via pub.dev

@@ -12,7 +12,9 @@ name: Publish to pub.dev
 #
 # Release flow (see AGENTS.md "Publishing"):
 #   melos version            # conventional commits → bump + CHANGELOG + commit + tags
-#   git push --follow-tags
+#   git push origin main
+#   git push origin <tag> <tag> <tag>   # at most 3 tags per push: GitHub runs no
+#                                       # workflow when more are pushed at once
 
 on:
   push:
