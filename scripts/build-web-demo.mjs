@@ -27,7 +27,9 @@ function run(command, argv, cwd) {
     const p = spawn(command, argv, { cwd, stdio: 'inherit' });
     p.on('error', reject);
     p.on('exit', (code) =>
-      code === 0 ? resolve() : reject(new Error(`${command} ${argv.join(' ')} exited with ${code}`)),
+      code === 0
+        ? resolve()
+        : reject(new Error(`${command} ${argv.join(' ')} exited with ${code}`)),
     );
   });
 }

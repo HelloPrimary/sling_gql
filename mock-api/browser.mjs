@@ -3,8 +3,8 @@
 // `globalThis.slingMockApi.fetch(url, init)`, which answers like the server
 // would — including `text/event-stream` subscriptions — without a network.
 // The example's web build sends every request there (lib/in_browser_api).
-import typeDefs from "./schema.graphql";
-import { createMockYoga } from "./app.mjs";
+import typeDefs from './schema.graphql';
+import { createMockYoga } from './app.mjs';
 
 const yoga = createMockYoga({
   typeDefs,

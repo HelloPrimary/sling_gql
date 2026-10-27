@@ -59,6 +59,10 @@ melos:
       packageFilters:
         ignore: [sling_gql_workspace]
 
+    lint:js:
+      description: oxlint + oxfmt check on mock-api/, scripts/ and the website config.
+      run: bun install --frozen-lockfile && bun run lint && bun run format
+
     test:runtime:
       description: Runtime, test-helper, hooks, gql_link and sqflite adapter package tests.
       run: flutter test

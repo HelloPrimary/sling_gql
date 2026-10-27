@@ -40,6 +40,9 @@ on the code.
   against it (`with-mock-api.mjs --server <file> --port <n>`, the tests read
   `--dart-define=SLING_API=<url>`). It runs on its own port, so it never
   clashes with a `bun start` on :4000.
+- JS tooling: root `package.json` holds oxc (`oxlint`, `oxfmt`, config in
+  `.oxfmtrc.json`) for `mock-api/`, `scripts/` and `website/astro.config.mjs`:
+  `melos run lint:js` (`bun run format:write` to fix). Run in CI.
 - `website/` — Astro + Starlight docs site, deployed to GitHub Pages by
   `.github/workflows/website.yml`. Landing page is `src/content/docs/index.mdx`;
   internal links must include the `/sling_gql/` base path. `bun run build` must

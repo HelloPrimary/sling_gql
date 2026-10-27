@@ -52,6 +52,9 @@ jobs:
       - name: Format
         run: melos run format --no-select
 
+      - name: Lint and format JS (oxc)
+        run: melos run lint:js --no-select
+
       - name: Runtime, test-helper, hooks and adapter tests
         run: melos run test:runtime --no-select
 

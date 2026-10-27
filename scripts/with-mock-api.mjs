@@ -58,7 +58,9 @@ function run(command, argv, opts = {}) {
 let server;
 if (await isUp()) {
   if (!process.env.MOCK_API_REUSE) {
-    console.error(`mock-api already listening on ${url}; reusing it (set MOCK_API_REUSE=1 to silence).`);
+    console.error(
+      `mock-api already listening on ${url}; reusing it (set MOCK_API_REUSE=1 to silence).`,
+    );
   }
 } else {
   // Not installed yet, or a dependency was added since.

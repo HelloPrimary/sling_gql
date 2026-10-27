@@ -25,7 +25,12 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const baselinePath = join(root, 'scripts', 'bench-baseline.json');
 
 const benches = [
-  { name: 'read path', cwd: join(root, 'example'), file: 'benchmark/bench_test.dart', out: 'read_path.json' },
+  {
+    name: 'read path',
+    cwd: join(root, 'example'),
+    file: 'benchmark/bench_test.dart',
+    out: 'read_path.json',
+  },
   {
     name: 'persistence',
     cwd: join(root, 'packages', 'sling_gql_sqflite'),
@@ -131,7 +136,13 @@ for (const [key, base] of Object.entries(baseline.metrics)) {
 }
 for (const key of Object.keys(current)) {
   if (!(key in baseline.metrics)) {
-    rows.push({ metric: key, baseline: 'none', current: current[key], ratio: '', verdict: 'new (update the baseline)' });
+    rows.push({
+      metric: key,
+      baseline: 'none',
+      current: current[key],
+      ratio: '',
+      verdict: 'new (update the baseline)',
+    });
   }
 }
 console.log(`\nMedians of ${runs} runs vs ${baselinePath} (fail above ${threshold}×):`);

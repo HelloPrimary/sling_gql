@@ -8,11 +8,12 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'sling_gql',
-      description:
-        'A GraphQL client for Flutter where the widget is the query.',
+      description: 'A GraphQL client for Flutter where the widget is the query.',
       logo: { src: './src/assets/logo.svg', alt: 'sling_gql' },
       favicon: '/favicon.svg',
-      social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/helloprimary/sling_gql' }],
+      social: [
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/helloprimary/sling_gql' },
+      ],
       editLink: { baseUrl: 'https://github.com/helloprimary/sling_gql/edit/main/website/' },
       customCss: ['./src/styles/custom.css'],
       // Head adds Astro's <ClientRouter /> (client-side page transitions); Search is

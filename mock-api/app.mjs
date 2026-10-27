@@ -3,13 +3,13 @@
 // over `node:http`; `browser.mjs` runs it inside the web build of the example
 // (bundled to `example/web/mock-api.js`), so every browser tab has its own
 // in-memory data.
-import { createYoga, createSchema, createPubSub } from "graphql-yoga";
-import { resolvers } from "./resolvers.mjs";
+import { createYoga, createSchema, createPubSub } from 'graphql-yoga';
+import { resolvers } from './resolvers.mjs';
 
 // Per-request override of the default latency, e.g. `x-mock-latency-ms: 2000`
 // (the example app's latency picker). A header rather than server state, so
 // clients running in parallel never see each other's setting.
-export const LATENCY_HEADER = "x-mock-latency-ms";
+export const LATENCY_HEADER = 'x-mock-latency-ms';
 
 function timestamp() {
   return new Date().toTimeString().slice(0, 8);
@@ -21,15 +21,13 @@ function logPlugin(log) {
   return {
     onExecute({ args }) {
       const start = Date.now();
-      const operation = args.document.definitions.find(
-        (d) => d.kind === "OperationDefinition"
-      );
-      const operationType = operation?.operation ?? "query";
+      const operation = args.document.definitions.find((d) => d.kind === 'OperationDefinition');
+      const operationType = operation?.operation ?? 'query';
       const rootFields =
         operation?.selectionSet?.selections
           ?.map((s) => s.alias?.value ?? s.name?.value)
           .filter(Boolean)
-          .join(", ") ?? "";
+          .join(', ') ?? '';
 
       return {
         onExecuteDone() {
@@ -61,7 +59,7 @@ export function createMockYoga({
 
   function requestLatencyMs(request) {
     const value = request.headers.get(LATENCY_HEADER);
-    if (value == null || value.trim() === "") return latencyMs;
+    if (value == null || value.trim() === '') return latencyMs;
     const ms = Number(value);
     return Number.isFinite(ms) && ms >= 0 ? ms : latencyMs;
   }

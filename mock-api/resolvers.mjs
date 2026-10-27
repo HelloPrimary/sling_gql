@@ -1,4 +1,4 @@
-import { GraphQLError, GraphQLScalarType, Kind } from "graphql";
+import { GraphQLError, GraphQLScalarType, Kind } from 'graphql';
 import {
   company,
   rockets,
@@ -12,7 +12,7 @@ import {
   toggleFavorite as toggleFavoriteData,
   scheduleLaunch as scheduleLaunchData,
   updateLaunchStatus as updateLaunchStatusData,
-} from "./data.mjs";
+} from './data.mjs';
 
 // ---------------------------------------------------------------------------
 // Launch sequence: what makes subscriptions worth watching. A scheduled
@@ -23,12 +23,12 @@ import {
 function runLaunchSequence(launch, pubsub, sequenceMs) {
   const step = (status) => {
     updateLaunchStatusData(launch.id, status);
-    pubsub.publish("launchStatusChanged", { launchStatusChanged: launch });
+    pubsub.publish('launchStatusChanged', { launchStatusChanged: launch });
     console.log(`[${new Date().toTimeString().slice(0, 8)}] sequence ${launch.name}: ${status}`);
   };
-  const outcome = launch.name.toLowerCase().includes("fail") ? "FAILURE" : "SUCCESS";
+  const outcome = launch.name.toLowerCase().includes('fail') ? 'FAILURE' : 'SUCCESS';
   // `unref` exists in Node only (browser timers are plain numbers).
-  setTimeout(() => step("IN_FLIGHT"), sequenceMs).unref?.();
+  setTimeout(() => step('IN_FLIGHT'), sequenceMs).unref?.();
   setTimeout(() => step(outcome), sequenceMs * 2).unref?.();
 }
 
@@ -45,8 +45,8 @@ function parseIsoDate(value) {
 }
 
 export const DateTime = new GraphQLScalarType({
-  name: "DateTime",
-  description: "ISO-8601 timestamp, e.g. 2024-03-14T13:30:00.000Z",
+  name: 'DateTime',
+  description: 'ISO-8601 timestamp, e.g. 2024-03-14T13:30:00.000Z',
   serialize(value) {
     const date = value instanceof Date ? value : new Date(value);
     if (Number.isNaN(date.getTime())) {
@@ -59,7 +59,7 @@ export const DateTime = new GraphQLScalarType({
   },
   parseLiteral(ast) {
     if (ast.kind !== Kind.STRING) {
-      throw new GraphQLError("DateTime literals must be strings");
+      throw new GraphQLError('DateTime literals must be strings');
     }
     return parseIsoDate(ast.value);
   },
@@ -94,13 +94,13 @@ function applyLaunchFilter(list, filter) {
 function applyLaunchOrder(list, orderBy) {
   const sorted = [...list];
   switch (orderBy) {
-    case "DATE_ASC":
+    case 'DATE_ASC':
       sorted.sort((a, b) => a.date.getTime() - b.date.getTime());
       break;
-    case "NAME_ASC":
+    case 'NAME_ASC':
       sorted.sort((a, b) => a.name.localeCompare(b.name));
       break;
-    case "DATE_DESC":
+    case 'DATE_DESC':
     default:
       sorted.sort((a, b) => b.date.getTime() - a.date.getTime());
       break;
@@ -120,10 +120,10 @@ function decodeCursor(cursor) {
   } catch {
     throw new GraphQLError(`Invalid cursor: ${cursor}`);
   }
-  if (!decoded.startsWith("cursor:")) {
+  if (!decoded.startsWith('cursor:')) {
     throw new GraphQLError(`Invalid cursor: ${cursor}`);
   }
-  const index = Number(decoded.slice("cursor:".length));
+  const index = Number(decoded.slice('cursor:'.length));
   if (!Number.isInteger(index) || index < 0) {
     throw new GraphQLError(`Invalid cursor: ${cursor}`);
   }
@@ -160,10 +160,10 @@ function paginateOffset(list, { limit, offset }) {
 }
 
 function typeOfId({ id }) {
-  if (id.startsWith("launch-")) return "Launch";
-  if (id.startsWith("rocket-")) return "Rocket";
-  if (id.startsWith("pad-")) return "Launchpad";
-  if (id.startsWith("astro-")) return "Astronaut";
+  if (id.startsWith('launch-')) return 'Launch';
+  if (id.startsWith('rocket-')) return 'Rocket';
+  if (id.startsWith('pad-')) return 'Launchpad';
+  if (id.startsWith('astro-')) return 'Astronaut';
   return null;
 }
 
@@ -179,13 +179,13 @@ export const resolvers = {
 
     launches: (_root, { first, after, filter, orderBy }) => {
       const filtered = applyLaunchFilter(launches, filter);
-      const ordered = applyLaunchOrder(filtered, orderBy ?? "DATE_DESC");
+      const ordered = applyLaunchOrder(filtered, orderBy ?? 'DATE_DESC');
       return paginateCursor(ordered, { first, after, defaultFirst: 20 });
     },
 
     launchesPage: (_root, { limit, offset, filter, orderBy }) => {
       const filtered = applyLaunchFilter(launches, filter);
-      const ordered = applyLaunchOrder(filtered, orderBy ?? "DATE_DESC");
+      const ordered = applyLaunchOrder(filtered, orderBy ?? 'DATE_DESC');
       return paginateOffset(ordered, { limit, offset });
     },
 
@@ -195,16 +195,14 @@ export const resolvers = {
       const upcoming = launches.filter((l) => l.upcoming);
       if (upcoming.length === 0) return null;
       return upcoming.reduce((earliest, l) =>
-        l.date.getTime() < earliest.date.getTime() ? l : earliest
+        l.date.getTime() < earliest.date.getTime() ? l : earliest,
       );
     },
 
     latestLaunch: () => {
       const past = launches.filter((l) => !l.upcoming);
       if (past.length === 0) return null;
-      return past.reduce((latest, l) =>
-        l.date.getTime() > latest.date.getTime() ? l : latest
-      );
+      return past.reduce((latest, l) => (l.date.getTime() > latest.date.getTime() ? l : latest));
     },
 
     rockets: () => rockets,
@@ -228,7 +226,7 @@ export const resolvers = {
       if (!needle) return [];
       const match = (x) => x.name.toLowerCase().includes(needle);
       const hits = [
-        ...applyLaunchOrder(launches.filter(match), "DATE_DESC"),
+        ...applyLaunchOrder(launches.filter(match), 'DATE_DESC'),
         ...rockets.filter(match),
         ...astronauts.filter(match),
       ];
@@ -241,11 +239,9 @@ export const resolvers = {
     stats: () => {
       const total = launches.length;
       const past = launches.filter((l) => !l.upcoming);
-      const successes = past.filter((l) => l.status === "SUCCESS").length;
+      const successes = past.filter((l) => l.status === 'SUCCESS').length;
       const successRatePct =
-        past.length > 0
-          ? Math.round((successes / past.length) * 1000) / 10
-          : 0;
+        past.length > 0 ? Math.round((successes / past.length) * 1000) / 10 : 0;
 
       const perYear = new Map();
       for (const l of launches) {
@@ -277,7 +273,7 @@ export const resolvers = {
         throw new GraphQLError(`Unknown launchpad id: ${input.launchpadId}`);
       }
       const launch = scheduleLaunchData(input);
-      pubsub.publish("launchScheduled", { launchScheduled: launch });
+      pubsub.publish('launchScheduled', { launchScheduled: launch });
       runLaunchSequence(launch, pubsub, sequenceMs);
       return launch;
     },
@@ -287,20 +283,18 @@ export const resolvers = {
       if (!launch) {
         throw new GraphQLError(`Unknown launch id: ${id}`);
       }
-      pubsub.publish("launchStatusChanged", { launchStatusChanged: launch });
+      pubsub.publish('launchStatusChanged', { launchStatusChanged: launch });
       return launch;
     },
   },
 
   Subscription: {
     launchStatusChanged: {
-      subscribe: (_root, _args, { pubsub }) =>
-        pubsub.subscribe("launchStatusChanged"),
+      subscribe: (_root, _args, { pubsub }) => pubsub.subscribe('launchStatusChanged'),
       resolve: (payload) => payload.launchStatusChanged,
     },
     launchScheduled: {
-      subscribe: (_root, _args, { pubsub }) =>
-        pubsub.subscribe("launchScheduled"),
+      subscribe: (_root, _args, { pubsub }) => pubsub.subscribe('launchScheduled'),
       resolve: (payload) => payload.launchScheduled,
     },
   },
@@ -320,8 +314,7 @@ export const resolvers = {
   },
 
   Astronaut: {
-    missions: (astronaut) =>
-      launches.filter((l) => l.crewIds.includes(astronaut.id)),
+    missions: (astronaut) => launches.filter((l) => l.crewIds.includes(astronaut.id)),
   },
 
   Viewer: {

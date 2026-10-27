@@ -1,0 +1,15 @@
+{
+  "name": "sling_gql_tooling",
+  "private": true,
+  "description": "Repo-level JS tooling (oxc linter/formatter) for mock-api/, scripts/ and website config",
+  "type": "module",
+  "scripts": {
+    "lint": "oxlint mock-api scripts website/astro.config.mjs",
+    "format": "oxfmt --check mock-api/*.mjs scripts/*.mjs website/astro.config.mjs",
+    "format:write": "oxfmt mock-api/*.mjs scripts/*.mjs website/astro.config.mjs"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.75.0",
+    "oxlint": "^1.90.0"
+  }
+}
