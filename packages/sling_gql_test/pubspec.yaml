@@ -4,10 +4,6 @@ description: >-
   client's own documents from plain Dart data, and pumpUntilSettled for widget
   tests.
 version: 1.2.1
-repository: https://github.com/tpucci/sling_gql
-homepage: https://tpucci.github.io/sling_gql/
-issue_tracker: https://github.com/tpucci/sling_gql/issues
-version: 1.1.0
 repository: https://github.com/helloprimary/sling_gql
 homepage: https://helloprimary.github.io/sling_gql/
 issue_tracker: https://github.com/helloprimary/sling_gql/issues
