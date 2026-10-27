@@ -67,7 +67,7 @@ if (await isUp()) {
   const pkg = JSON.parse(readFileSync(join(mockDir, 'package.json'), 'utf8'));
   const deps = Object.keys({ ...pkg.dependencies, ...pkg.devDependencies });
   if (deps.some((d) => !existsSync(join(mockDir, 'node_modules', d)))) {
-    const code = await run('npm', ['ci', '--no-audit', '--no-fund'], { cwd: mockDir });
+    const code = await run('bun', ['install', '--frozen-lockfile'], { cwd: mockDir });
     if (code !== 0) process.exit(code);
   }
   // A fast launch sequence keeps the subscription test short.

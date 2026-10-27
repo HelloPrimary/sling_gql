@@ -35,9 +35,9 @@ function run(command, argv, cwd) {
 }
 
 if (!existsSync(join(mockDir, 'node_modules'))) {
-  await run('npm', ['ci', '--no-audit', '--no-fund'], mockDir);
+  await run('bun', ['install', '--frozen-lockfile'], mockDir);
 }
-await run('npm', ['run', 'build:browser'], mockDir);
+await run('bun', ['run', 'build:browser'], mockDir);
 await run(
   'flutter',
   ['build', 'web', '--release', '--base-href', baseHref, '--no-wasm-dry-run'],
