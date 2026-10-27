@@ -1,3 +1,8 @@
+## 1.3.1
+
+ - **FIX**(sling_gql): repair pubspec metadata after repository move. ([9965e67a](https://github.com/helloprimary/sling_gql/commit/9965e67a9476989e2f5b9dc958a77ef12644adf3))
+ - **FIX**(sling_gql): move repository to helloprimary/sling_gql. ([2175b5b9](https://github.com/helloprimary/sling_gql/commit/2175b5b9005ca35073c18f8701ee82508bb05272))
+
 ## 1.3.0
 
  - **FEAT**(sling_gql_gen): slingSchema.fields lists the mutation and subscription roots. ([0a0f4445](https://github.com/tpucci/sling_gql/commit/0a0f444521a6229a7cec7963eca9e9dc5a3c920f))

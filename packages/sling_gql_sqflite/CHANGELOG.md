@@ -1,3 +1,8 @@
+## 1.4.2
+
+ - **FIX**(sling_gql): repair pubspec metadata after repository move. ([9965e67a](https://github.com/helloprimary/sling_gql/commit/9965e67a9476989e2f5b9dc958a77ef12644adf3))
+ - **FIX**(sling_gql): move repository to helloprimary/sling_gql. ([2175b5b9](https://github.com/helloprimary/sling_gql/commit/2175b5b9005ca35073c18f8701ee82508bb05272))
+
 ## 1.4.1
 
  - Update a dependency to the latest release.

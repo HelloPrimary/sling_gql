@@ -1,3 +1,8 @@
+## 1.3.2
+
+ - **FIX**(sling_gql): repair pubspec metadata after repository move. ([9965e67a](https://github.com/helloprimary/sling_gql/commit/9965e67a9476989e2f5b9dc958a77ef12644adf3))
+ - **FIX**(sling_gql): move repository to helloprimary/sling_gql. ([2175b5b9](https://github.com/helloprimary/sling_gql/commit/2175b5b9005ca35073c18f8701ee82508bb05272))
+
 ## 1.3.1
 
  - **FIX**(sling_gql): lists merged by a refetch stay growable. ([23c28be1](https://github.com/tpucci/sling_gql/commit/23c28be1af6f2eda4e6150aecb4b3dc885abb071))
