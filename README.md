@@ -88,11 +88,11 @@ melos bootstrap                                # pub workspace: one `pub get` fo
 melos run test                                 # runtime + generator + example (yoga, then graphql-http; servers auto-started) + website
 melos run test:runtime                         # or one gate at a time
 
-cd mock-api && npm install && npm start        # http://localhost:4000/graphql (GraphiQL), for `flutter run`
+cd mock-api && bun install && bun start        # http://localhost:4000/graphql (GraphiQL), for `flutter run`
 cd example && flutter run -d <ios-simulator>    # or an Android emulator (10.0.2.2:4000)
 
 # Web: the mock API runs in the page, no server needed
-cd mock-api && npm run build:browser && cd ../example && flutter run -d chrome
+cd mock-api && bun run build:browser && cd ../example && flutter run -d chrome
 melos run build:web                            # release build for the website (Try it page)
 ```
 
@@ -117,7 +117,7 @@ header per request) and a live view of the cache.
 Regenerate the example's schema classes after editing `mock-api/schema.graphql`:
 
 ```sh
-cd mock-api && npm run introspect              # → example/graphql/schema.json
+cd mock-api && bun run introspect              # → example/graphql/schema.json
 cd .. && melos run generate                    # → example/lib/generated/schema.dart
 ```
 

@@ -23,8 +23,8 @@ deterministic data, adjustable latency, and no rate limits.
 
 ```sh title="mock-api/"
 cd mock-api
-npm install
-npm start        # or: npm run dev  (restarts on file change)
+bun install
+bun start        # or: bun run dev  (restarts on file change)
 ```
 
 ```
@@ -64,7 +64,7 @@ Every completed operation is logged to stdout as one line, root fields only:
 
 The same API also runs in the browser, with no server: that is what
 [Try it live](/sling_gql/guides/try-it/) and the demos in the guides use.
-`npm run build:browser` builds it for the example's web version.
+`bun run build:browser` builds it for the example's web version.
 
 ### A second server
 
@@ -281,7 +281,7 @@ The example app's `graphql/schema.json` — the input to `sling_gql_gen` — is
 a snapshot, not fetched live:
 
 ```sh
-cd mock-api && npm run introspect
+cd mock-api && bun run introspect
 ```
 
 This imports the executable schema directly (no server needs to be running)
@@ -298,7 +298,7 @@ and overwrites `../example/graphql/schema.json`. Run it any time
 2. **Re-run introspection** to refresh `example/graphql/schema.json`:
 
    ```sh
-   cd mock-api && npm run introspect
+   cd mock-api && bun run introspect
    ```
 
 3. **Regenerate the Dart accessors** — see

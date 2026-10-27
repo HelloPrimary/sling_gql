@@ -7,7 +7,7 @@
       // Set LATENCY_MS in `options.env` to make skeletons visible longer.
       "label": "mock-api",
       "type": "shell",
-      "command": "npm start",
+      "command": "bun start",
       "options": {
         "cwd": "${workspaceFolder}/mock-api",
         "env": { "LATENCY_MS": "600" }

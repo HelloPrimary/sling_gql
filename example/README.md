@@ -6,15 +6,15 @@ mock API in `../mock-api`. The full tour is on the website:
 web build runs there: [Try it live](https://helloprimary.github.io/sling_gql/guides/try-it/).
 
 ```sh
-# iOS: against `npm start` on localhost:4000
-cd ../mock-api && npm install && npm start   # http://localhost:4000/graphql
+# iOS: against `bun start` on localhost:4000
+cd ../mock-api && bun install && bun start   # http://localhost:4000/graphql
 cd ../example && flutter run -d <ios-simulator>
 
 # Android emulator: the same server, reached at 10.0.2.2:4000
 cd ../example && flutter run -d emulator-5554
 
 # Web: the mock API is bundled into the page (web/mock-api.js, not committed)
-cd ../mock-api && npm install && npm run build:browser
+cd ../mock-api && bun install && bun run build:browser
 cd ../example && flutter run -d chrome
 ```
 

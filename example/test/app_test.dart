@@ -14,7 +14,7 @@ import 'package:sling_gql_example/type_policies.dart';
 import 'package:sling_gql_example/widgets/launch_row.dart';
 import 'package:sling_gql_test/sling_gql_test.dart';
 
-/// Runs against the real mock API: `cd mock-api && npm start` first
+/// Runs against the real mock API: `cd mock-api && bun start` first
 /// (`melos run test:example` starts it for you). `useRealNetwork()` lifts
 /// the HTTP block `flutter test` installs.
 ///

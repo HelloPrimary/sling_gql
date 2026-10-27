@@ -9,11 +9,11 @@ on the code.
 
 ## Toolchain
 
-- Flutter and Node are pinned via asdf in `.tool-versions`. Run `flutter` /
-  `dart` / `node` / `npm` from inside the repo so the pins apply.
-- `mock-api/` — graphql-yoga server (`npm start`, port 4000, `LATENCY_MS`).
+- Flutter, Node and Bun are pinned via asdf in `.tool-versions`. Run `flutter` /
+  `dart` / `node` / `bun` from inside the repo so the pins apply.
+- `mock-api/` — graphql-yoga server (`bun start`, port 4000, `LATENCY_MS`).
   `mock-api/schema.graphql` is the **contract**; change it there, then
-  `npm run introspect` and regenerate the Dart classes (below). The example
+  `bun run introspect` and regenerate the Dart classes (below). The example
   widget tests (`example/test/app_test.dart`) need the server running.
   The mock API keeps its state in memory and the e2e tests mutate it
   (scheduled launches, favourites), so a long-running server drifts
@@ -23,13 +23,13 @@ on the code.
   that mutable server; concurrent files raced on CI): keep it, and never
   assert fixed launch names that another test file can change.
   When the example tests fail on data/counts and a server was already
-  running, restart it (kill the `npm start` / `node server.mjs` on :4000,
+  running, restart it (kill the `bun start` / `node server.mjs` on :4000,
   rerun the tests so the script starts a fresh one, then restart
-  `npm start` in `mock-api/` in the background if one was running before)
+  `bun start` in `mock-api/` in the background if one was running before)
   — don't treat it as a code regression.
   The yoga instance lives in `app.mjs` (`createMockYoga`, no Node APIs);
   `server.mjs` serves it over `node:http`, `browser.mjs` exposes it as
-  `globalThis.slingMockApi` and `npm run build:browser` bundles that to
+  `globalThis.slingMockApi` and `bun run build:browser` bundles that to
   `example/web/mock-api.js` (gitignored) for the example's web build. Keep
   `resolvers.mjs` / `data.mjs` free of `Buffer`/`process`/`fs`.
   `graphql-http-server.mjs` is a **second server implementation** over the
@@ -39,10 +39,10 @@ on the code.
   test:example:graphql-http` runs `app_test.dart` + `graphql_server_test.dart`
   against it (`with-mock-api.mjs --server <file> --port <n>`, the tests read
   `--dart-define=SLING_API=<url>`). It runs on its own port, so it never
-  clashes with an `npm start` on :4000.
+  clashes with a `bun start` on :4000.
 - `website/` — Astro + Starlight docs site, deployed to GitHub Pages by
   `.github/workflows/website.yml`. Landing page is `src/content/docs/index.mdx`;
-  internal links must include the `/sling_gql/` base path. `npm run build` must
+  internal links must include the `/sling_gql/` base path. `bun run build` must
   pass before committing content.
 - **Pub workspace + melos 7.** The root `pubspec.yaml` lists the six
   packages (`workspace:`), each has `resolution: workspace`; only the root

@@ -37,8 +37,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
-          cache: npm
-          cache-dependency-path: mock-api/package-lock.json
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
 
       - name: Bootstrap workspace
         run: |
@@ -98,6 +99,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
 
       - name: Bootstrap workspace
         run: |
@@ -151,9 +155,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
-          cache: npm
-          cache-dependency-path: website/package-lock.json
-      - run: npm ci
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+      - run: bun install --frozen-lockfile
         working-directory: website
-      - run: npm run build
+      - run: bun run build
         working-directory: website

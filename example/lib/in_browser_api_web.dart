@@ -8,7 +8,7 @@ import 'package:web/web.dart' as web;
 /// `in_browser_api.dart`).
 http.Client mockApiHttpClient() => InBrowserMockApiClient();
 
-/// Whether requests are answered in-process rather than by `npm start`.
+/// Whether requests are answered in-process rather than by `bun start`.
 const bool mockApiInBrowser = true;
 
 /// Nominal: the in-page mock API answers whatever host the URL names.
@@ -34,7 +34,7 @@ class InBrowserMockApiClient extends http.BaseClient {
     final api = _mockApi;
     if (api == null) {
       throw http.ClientException(
-        'web/mock-api.js is not loaded: run `npm run build:browser` in '
+        'web/mock-api.js is not loaded: run `bun run build:browser` in '
         'mock-api/ before `flutter run -d chrome`.',
         request.url,
       );

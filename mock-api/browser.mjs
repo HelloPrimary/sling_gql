@@ -1,4 +1,4 @@
-// Browser entry of the mock API, bundled by `npm run build:browser` into
+// Browser entry of the mock API, bundled by `bun run build:browser` into
 // `example/web/mock-api.js` (schema inlined). Exposes
 // `globalThis.slingMockApi.fetch(url, init)`, which answers like the server
 // would — including `text/event-stream` subscriptions — without a network.
@@ -8,7 +8,7 @@ import { createMockYoga } from "./app.mjs";
 
 const yoga = createMockYoga({
   typeDefs,
-  // Same defaults as `npm start`; the in-app latency picker overrides them.
+  // Same defaults as `bun start`; the in-app latency picker overrides them.
   latencyMs: 400,
   sequenceMs: 4000,
   log: (line) => console.debug(`mock-api ${line}`),

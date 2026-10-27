@@ -50,7 +50,7 @@ unformatted-but-correct code rather than a crash.
 
 <Aside type="tip">
 In this repository the example regenerates from a committed snapshot
-(`example/graphql/schema.json`) produced by the mock API's `npm run introspect`, so the
+(`example/graphql/schema.json`) produced by the mock API's `bun run introspect`, so the
 generated code is reproducible without a server — see [Mock API](/sling_gql/tooling/mock-api/).
 </Aside>
 
@@ -327,7 +327,7 @@ go looking for why `type$` or `$typename` is spelled that way.
 2. **Re-run introspection.**
 
    ```sh
-   cd mock-api && npm run introspect
+   cd mock-api && bun run introspect
    ```
 
    This overwrites `example/graphql/schema.json` without needing the server

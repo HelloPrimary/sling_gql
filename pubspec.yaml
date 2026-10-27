@@ -114,7 +114,7 @@ melos:
 
     test:website:
       description: Build the docs site.
-      run: cd website && npm ci --no-audit --no-fund && npm run build
+      run: cd website && bun install --frozen-lockfile && bun run build
 
     test:
       description: >-

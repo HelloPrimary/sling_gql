@@ -12,8 +12,8 @@ startup (`readFileSync`); it is never generated or edited by this server.
 
 ```sh
 cd mock-api
-npm install
-npm start        # or: npm run dev  (restarts on file change)
+bun install
+bun start        # or: bun run dev  (restarts on file change)
 ```
 
 GraphiQL: http://localhost:4000/graphql
@@ -51,7 +51,7 @@ Each operation is logged to stdout as it completes, e.g.:
 | `browser.mjs` | Browser: `globalThis.slingMockApi.fetch(url, init)`. |
 
 ```sh
-npm run build:browser   # browser.mjs (schema inlined) -> ../example/web/mock-api.js
+bun run build:browser   # browser.mjs (schema inlined) -> ../example/web/mock-api.js
 ```
 
 The example's web build loads the bundle and sends every request to it (no
@@ -180,7 +180,7 @@ subscription {
 ## Regenerating the example app's introspection snapshot
 
 ```sh
-npm run introspect
+bun run introspect
 ```
 
 This imports the executable schema directly (no server needs to be running),

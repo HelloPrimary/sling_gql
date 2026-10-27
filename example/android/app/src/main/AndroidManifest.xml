@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- The mock API (npm start in mock-api/), in every build type. -->
+    <!-- The mock API (bun start in mock-api/), in every build type. -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="Sling Gql Example"

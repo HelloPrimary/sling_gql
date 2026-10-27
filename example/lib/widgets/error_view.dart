@@ -32,12 +32,12 @@ class ErrorView extends StatelessWidget {
           const Icon(CupertinoIcons.exclamationmark_triangle, size: 40),
           const SizedBox(height: 8),
           Text(_summary, textAlign: TextAlign.center),
-          // On iOS and Android the API is `npm start` on the host; on the
+          // On iOS and Android the API is `bun start` on the host; on the
           // web it runs in the page, so there is nothing to start.
           if (!mockApiInBrowser) ...[
             const SizedBox(height: 8),
             const Text(
-              'Is the mock API running? `cd mock-api && npm start`',
+              'Is the mock API running? `cd mock-api && bun start`',
               style: TextStyle(color: CupertinoColors.systemGrey, fontSize: 13),
             ),
           ],

@@ -12,7 +12,7 @@ import 'network_log.dart';
 import 'persisted_cache.dart';
 import 'type_policies.dart';
 
-/// The mock API in `../mock-api` (`npm start`). The iOS simulator shares the
+/// The mock API in `../mock-api` (`bun start`). The iOS simulator shares the
 /// host network, so `localhost` works as-is; the Android emulator reaches
 /// the host at `10.0.2.2` ([mockApiHost]). On the web the same URL is
 /// answered by the mock API bundled into the page (`in_browser_api.dart`).

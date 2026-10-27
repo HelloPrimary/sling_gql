@@ -36,7 +36,7 @@ import { Steps, FileTree, Aside } from '@astrojs/starlight/components';
    400 ms of artificial latency so skeletons are visible.
 
    ```sh
-   cd mock-api && npm install && npm start
+   cd mock-api && bun install && bun start
    # → http://localhost:4000/graphql  (GraphiQL)
    ```
 
@@ -69,7 +69,7 @@ import { Steps, FileTree, Aside } from '@astrojs/starlight/components';
    ```sh
    cd example && flutter run -d <ios-simulator-id>   # or an Android emulator
    # or, from the repo root, with the mock API in the page (no server):
-   (cd mock-api && npm run build:browser) && cd example && flutter run -d chrome
+   (cd mock-api && bun run build:browser) && cd example && flutter run -d chrome
    ```
 
    Every request is printed to the console and listed in-app (**N requests**, top right).
@@ -78,14 +78,14 @@ import { Steps, FileTree, Aside } from '@astrojs/starlight/components';
    derived from it.
 
    ```sh
-   cd mock-api && npm run introspect          # → example/graphql/schema.json
+   cd mock-api && bun run introspect          # → example/graphql/schema.json
    cd .. && melos run generate                # example/lib/generated/schema.dart
    ```
 
 6. **Work on the website.**
 
    ```sh
-   cd website && npm install && npm run dev   # http://localhost:4321/sling_gql/
+   cd website && bun install && bun run dev   # http://localhost:4321/sling_gql/
    ```
 
    It deploys to GitHub Pages on every push to `main` that touches `website/`.

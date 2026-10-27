@@ -93,7 +93,7 @@ compiled in. The widget tests build their own client and never call
 The Android emulator reaches the host machine at `10.0.2.2`, so there the app's
 `endpoint` is `http://10.0.2.2:4000/graphql` (`mockApiHost` in
 `in_browser_api.dart`); the manifest's network security config allows
-cleartext HTTP to `10.0.2.2` and `localhost` only. Same `npm start`, same
+cleartext HTTP to `10.0.2.2` and `localhost` only. Same `bun start`, same
 SQLite cache as on iOS:
 
 ```sh
@@ -105,11 +105,11 @@ SEQUENCE_MS=2000 node ../scripts/with-mock-api.mjs flutter test integration_test
 
 ### On the web
 
-On iOS the app talks to `npm start` on `localhost:4000`. The web version needs no
+On iOS the app talks to `bun start` on `localhost:4000`. The web version needs no
 server: it brings its own copy of the mock API, built first:
 
 ```sh
-cd mock-api && npm run build:browser   # → example/web/mock-api.js
+cd mock-api && bun run build:browser   # → example/web/mock-api.js
 cd ../example && flutter run -d chrome
 ```
 
