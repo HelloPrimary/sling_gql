@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
-  site: 'https://tpucci.github.io',
+  site: 'https://helloprimary.github.io',
   base: '/sling_gql',
   integrations: [
     starlight({
@@ -12,8 +12,8 @@ export default defineConfig({
         'A GraphQL client for Flutter where the widget is the query.',
       logo: { src: './src/assets/logo.svg', alt: 'sling_gql' },
       favicon: '/favicon.svg',
-      social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/tpucci/sling_gql' }],
-      editLink: { baseUrl: 'https://github.com/tpucci/sling_gql/edit/main/website/' },
+      social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/helloprimary/sling_gql' }],
+      editLink: { baseUrl: 'https://github.com/helloprimary/sling_gql/edit/main/website/' },
       customCss: ['./src/styles/custom.css'],
       // Head adds Astro's <ClientRouter /> (client-side page transitions); Search is
       // persisted across those navigations. See the components for details.

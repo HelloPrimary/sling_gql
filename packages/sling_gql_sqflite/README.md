@@ -10,8 +10,8 @@ database is a durable **write-behind copy**: loaded once before the client
 starts, then kept up to date with small deltas. Memory is the persisted
 size, so the *store* is bounded (by age and entity count).
 
-Docs: https://tpucci.github.io/sling_gql/guides/persistence/ · Source:
-https://github.com/tpucci/sling_gql
+Docs: https://helloprimary.github.io/sling_gql/guides/persistence/ · Source:
+https://github.com/helloprimary/sling_gql
 
 ```sh
 flutter pub add sling_gql_sqflite
@@ -71,7 +71,7 @@ table is not part of the format version: a wiped cache keeps the entries
 (without their rollback logs); another codec id drops them;
 `persistence.clear()` empties it (call `client.clearMutationQueue()` first on
 sign-out: replays use the current auth headers). See
-https://tpucci.github.io/sling_gql/guides/mutations/#offline-mutations.
+https://helloprimary.github.io/sling_gql/guides/mutations/#offline-mutations.
 
 ## Bounds
 
@@ -177,6 +177,6 @@ major version with `sling_gql`. A change to the tables bumps
 next `open` (called out in the changelog); a regenerated schema migrates it
 instead. A new major of `sqflite` is a major here. Deprecated APIs keep working for at least one minor release and are
 removed only in the next major. Full policy:
-[Versioning & deprecation](https://tpucci.github.io/sling_gql/internals/versioning/); coming from 0.x:
-[Upgrading to 1.0](https://tpucci.github.io/sling_gql/guides/upgrading-to-1-0/). Security issues:
-[SECURITY.md](https://github.com/tpucci/sling_gql/blob/main/SECURITY.md).
+[Versioning & deprecation](https://helloprimary.github.io/sling_gql/internals/versioning/); coming from 0.x:
+[Upgrading to 1.0](https://helloprimary.github.io/sling_gql/guides/upgrading-to-1-0/). Security issues:
+[SECURITY.md](https://github.com/helloprimary/sling_gql/blob/main/SECURITY.md).

@@ -6,6 +6,10 @@ version: 1.0.5
 repository: https://github.com/tpucci/sling_gql
 homepage: https://tpucci.github.io/sling_gql/guides/transport/
 issue_tracker: https://github.com/tpucci/sling_gql/issues
+version: 1.0.3
+repository: https://github.com/helloprimary/sling_gql
+homepage: https://helloprimary.github.io/sling_gql/guides/transport/
+issue_tracker: https://github.com/helloprimary/sling_gql/issues
 topics:
   - graphql
   - gql-link

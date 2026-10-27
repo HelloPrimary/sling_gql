@@ -5,8 +5,8 @@ Run [sling_gql](https://pub.dev/packages/sling_gql)'s requests through a
 persisted queries, websockets, whatever links you already have — as the one
 `Transport` a `SlingClient` takes. sling_gql itself stays `http`-only.
 
-Docs: https://tpucci.github.io/sling_gql/guides/transport/ · Source:
-https://github.com/tpucci/sling_gql
+Docs: https://helloprimary.github.io/sling_gql/guides/transport/ · Source:
+https://github.com/helloprimary/sling_gql
 
 ```sh
 flutter pub add sling_gql_link gql_link gql_http_link
@@ -89,6 +89,6 @@ From 1.0 `sling_gql_link` follows semantic versioning and shares its major
 version with `sling_gql`. A new major of `gql_link` / `gql_exec` (whose types
 are part of this API) is a major here. Deprecated APIs keep working for at least one minor release and are
 removed only in the next major. Full policy:
-[Versioning & deprecation](https://tpucci.github.io/sling_gql/internals/versioning/); coming from 0.x:
-[Upgrading to 1.0](https://tpucci.github.io/sling_gql/guides/upgrading-to-1-0/). Security issues:
-[SECURITY.md](https://github.com/tpucci/sling_gql/blob/main/SECURITY.md).
+[Versioning & deprecation](https://helloprimary.github.io/sling_gql/internals/versioning/); coming from 0.x:
+[Upgrading to 1.0](https://helloprimary.github.io/sling_gql/guides/upgrading-to-1-0/). Security issues:
+[SECURITY.md](https://github.com/helloprimary/sling_gql/blob/main/SECURITY.md).

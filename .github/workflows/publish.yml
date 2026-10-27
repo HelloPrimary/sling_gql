@@ -2,7 +2,7 @@ name: Publish to pub.dev
 
 # `melos version` tags each bumped package as `<package>-vX.Y.Z`; pushing such
 # a tag publishes that package. pub.dev "Automated publishing" is enabled for
-# tpucci/sling_gql with tag patterns `sling_gql-v{{version}}`,
+# helloprimary/sling_gql with tag patterns `sling_gql-v{{version}}`,
 # `sling_gql_gen-v{{version}}` and `sling_gql_test-v{{version}}`; auth is the
 # GitHub OIDC token, no secrets. `sling_gql_hooks-v{{version}}`,
 # `sling_gql_link-v{{version}}` and `sling_gql_sqflite-v{{version}}` are

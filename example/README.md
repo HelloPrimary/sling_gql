@@ -2,8 +2,8 @@
 
 A Cupertino app (Launches, Search and Me tabs) for iOS, Android and web, against the
 mock API in `../mock-api`. The full tour is on the website:
-[Example app](https://tpucci.github.io/sling_gql/tooling/example-app/); the
-web build runs there: [Try it live](https://tpucci.github.io/sling_gql/guides/try-it/).
+[Example app](https://helloprimary.github.io/sling_gql/tooling/example-app/); the
+web build runs there: [Try it live](https://helloprimary.github.io/sling_gql/guides/try-it/).
 
 ```sh
 # iOS: against `npm start` on localhost:4000

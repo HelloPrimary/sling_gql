@@ -3,7 +3,7 @@
 ## Reporting a vulnerability
 
 Please report security issues **privately**, through GitHub's security
-advisories: [Report a vulnerability](https://github.com/tpucci/sling_gql/security/advisories/new)
+advisories: [Report a vulnerability](https://github.com/helloprimary/sling_gql/security/advisories/new)
 (repository → *Security* → *Advisories* → *Report a vulnerability*). Do not
 open a public issue, pull request or discussion for it.
 
@@ -18,7 +18,7 @@ released as a patch of the affected packages, with a GitHub security advisory
 | Package | Supported |
 | --- | --- |
 | `sling_gql`, `sling_gql_gen`, `sling_gql_test`, `sling_gql_hooks`, `sling_gql_link`, `sling_gql_sqflite` 1.x | ✅ latest minor |
-| 0.x | ❌ — upgrade to 1.x ([guide](https://tpucci.github.io/sling_gql/guides/upgrading-to-1-0/)) |
+| 0.x | ❌ — upgrade to 1.x ([guide](https://helloprimary.github.io/sling_gql/guides/upgrading-to-1-0/)) |
 
 ## Scope
 

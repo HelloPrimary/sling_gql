@@ -9,5 +9,5 @@ npm run dev       # http://localhost:4321/sling_gql/
 npm run build     # → dist/
 ```
 
-Deployed to GitHub Pages (https://tpucci.github.io/sling_gql/) by
+Deployed to GitHub Pages (https://helloprimary.github.io/sling_gql/) by
 `.github/workflows/website.yml` on every push to `main` touching `website/`.

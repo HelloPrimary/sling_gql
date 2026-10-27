@@ -1,9 +1,9 @@
 # sling_gql
 
 A GraphQL client for Flutter where the widget is the query.
-Inspired by [GQty](https://gqty.dev). Docs: https://tpucci.github.io/sling_gql/ ·
-[Versioning policy](https://tpucci.github.io/sling_gql/internals/versioning/) ·
-[Upgrading to 1.0](https://tpucci.github.io/sling_gql/guides/upgrading-to-1-0/) ·
+Inspired by [GQty](https://gqty.dev). Docs: https://helloprimary.github.io/sling_gql/ ·
+[Versioning policy](https://helloprimary.github.io/sling_gql/internals/versioning/) ·
+[Upgrading to 1.0](https://helloprimary.github.io/sling_gql/guides/upgrading-to-1-0/) ·
 [Security](SECURITY.md)
 
 > Read a field, get the query. No operation documents, no fragments, no
@@ -96,7 +96,7 @@ cd mock-api && npm run build:browser && cd ../example && flutter run -d chrome
 melos run build:web                            # release build for the website (Try it page)
 ```
 
-Or just [try it live](https://tpucci.github.io/sling_gql/guides/try-it/) on the website.
+Or just [try it live](https://helloprimary.github.io/sling_gql/guides/try-it/) on the website.
 
 The packages are on pub.dev:
 [`sling_gql`](https://pub.dev/packages/sling_gql) (runtime),

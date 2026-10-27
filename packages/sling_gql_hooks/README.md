@@ -7,8 +7,8 @@
 machinery (one `QueryScope` per widget, per-frame batching, per-field
 rebuilds, sticky errors, fetch policies), no builder nesting.
 
-Docs: https://tpucci.github.io/sling_gql/guides/hooks/ · Source:
-https://github.com/tpucci/sling_gql
+Docs: https://helloprimary.github.io/sling_gql/guides/hooks/ · Source:
+https://github.com/helloprimary/sling_gql
 
 ```sh
 flutter pub add sling_gql sling_gql_hooks flutter_hooks
@@ -93,6 +93,6 @@ version with `sling_gql`; the hooks keep the semantics of the builders of the
 same `sling_gql` major. A new major of `flutter_hooks` is a major here.
 Deprecated APIs keep working for at least one minor release and are
 removed only in the next major. Full policy:
-[Versioning & deprecation](https://tpucci.github.io/sling_gql/internals/versioning/); coming from 0.x:
-[Upgrading to 1.0](https://tpucci.github.io/sling_gql/guides/upgrading-to-1-0/). Security issues:
-[SECURITY.md](https://github.com/tpucci/sling_gql/blob/main/SECURITY.md).
+[Versioning & deprecation](https://helloprimary.github.io/sling_gql/internals/versioning/); coming from 0.x:
+[Upgrading to 1.0](https://helloprimary.github.io/sling_gql/guides/upgrading-to-1-0/). Security issues:
+[SECURITY.md](https://github.com/helloprimary/sling_gql/blob/main/SECURITY.md).

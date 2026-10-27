@@ -18,7 +18,7 @@ dev_dependencies:
   melos: ^7.4.0
 
 melos:
-  repository: https://github.com/tpucci/sling_gql
+  repository: https://github.com/helloprimary/sling_gql
 
   ignore:
     - sling_gql_workspace
